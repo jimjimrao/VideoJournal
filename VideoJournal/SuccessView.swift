@@ -19,11 +19,11 @@ struct SuccessView: View {
                 .padding(.bottom, 300)
             Button(action: {}) {
                 Text("Continue")
-                .padding()
-                .foregroundColor(.white)
-                .background(.blue)
-                .cornerRadius(10)
-                .frame(maxWidth: .infinity)
+                    .padding()
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .background(.blue)
+                    .cornerRadius(10)
             }
             
         }
