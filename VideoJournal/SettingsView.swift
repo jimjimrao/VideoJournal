@@ -32,6 +32,7 @@ struct SettingsView: View {
                         .background(Color.white)
                         .cornerRadius(10)
                     }
+                    Spacer() // This will push the button to the top
                 }
             }
             .navigationBarTitle("Settings" , displayMode: .inline)
