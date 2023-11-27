@@ -9,27 +9,28 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        VStack {
-            Text("Hello, World!")
-            Button(action: {
-                // Handle button press here
-            }) {
-                HStack {
-                    Image("google-logo") // Use your custom asset
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                        .foregroundColor(.white)
-                    Text("Sign in with Google")
-                        .foregroundColor(.gray)
+        ZStack {
+            Color(.sRGB, white: 0.9, opacity: 1) // Light gray background
+                .edgesIgnoringSafeArea(.all) // Extend the color to the edges of the screen
+
+            VStack {
+                Button(action: {
+                    // Handle button press here
+                }) {
+                    HStack {
+                        Image("google-logo") // Use your custom asset
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 24, height: 24)
+                            .foregroundColor(.white)
+                        Text("Sign in with Google")
+                            .foregroundColor(.black)
+                            .bold()
+                    }
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(10)
                 }
-                .padding()
-                .background(Color.white)
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.black, lineWidth: 2)
-                )
             }
         }
     }
@@ -40,5 +41,6 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView()
     }
 }
+
 
 
