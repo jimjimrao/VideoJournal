@@ -26,7 +26,7 @@ struct CameraView: View {
                 if camera.isTaken{
                     HStack {
                         Spacer()
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
+                        Button(action: camera.reTake, label: {
                             Image(systemName: 
                                 "arrow.triangle.2.circlepath.camera")
                                 .foregroundColor(.black)
@@ -152,6 +152,16 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             self.output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
             self.session.stopRunning()
 
+            DispatchQueue.main.async {
+                withAnimation{self.isTaken.toggle()}
+            }
+        }
+    }
+    
+    func reTake(){
+        DispatchQueue.global(qos: .background).async {
+            self.session.startRunning()
+            
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
             }
