@@ -27,7 +27,7 @@ struct CameraView: View {
                     HStack {
                         Spacer()
                         Button(action: camera.reTake, label: {
-                            Image(systemName: 
+                            Image(systemName:
                                 "arrow.triangle.2.circlepath.camera")
                                 .foregroundColor(.black)
                                 .padding()
@@ -43,8 +43,8 @@ struct CameraView: View {
                 HStack{
 //                    if taken showing save and again take button...
                     if camera.isTaken{
-                        Button(action: /*@START_MENU_TOKEN@*/{}/*@END_MENU_TOKEN@*/, label: {
-                            Text("Save")
+                        Button(action: {if !camera.isSaved{camera.savePic()}}, label: {
+                            Text(camera.isSaved ? "Saved" :"Save")
                                 .foregroundColor(.black)
                                 .fontWeight(.semibold)
                                 .padding(.vertical, 10)
@@ -91,6 +91,11 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var output = AVCapturePhotoOutput()
     
     @Published var preview : AVCaptureVideoPreviewLayer!
+    
+    @Published var isSaved = false
+    
+    @Published var picData = Data(count: 0)
+    
     
     func Check() {
 //        first checking camera's got permission
@@ -150,8 +155,8 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     func takePic() {
         DispatchQueue.global(qos: .background).async {
             self.output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
-            self.session.stopRunning()
-
+            DispatchQueue.main.async { Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { (timer) in self.session.stopRunning() } }
+            print("takePic has been called")
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
             }
@@ -164,15 +169,37 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
+                
+                // clearing
+                
+                self.isSaved = false
             }
         }
     }
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if error != nil {
+            print("photoOutput")
             return
         }
         print("pic taken")
+        
+        guard let imageData = photo.fileDataRepresentation() else{return}
+        
+        self.picData = imageData
+    }
+    
+    func savePic(){
+        
+        let image = UIImage(data: self.picData)!
+        
+        // saving image
+        
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        
+        self.isSaved = true
+        
+        print("saved succesfully")
     }
 }
 // setting view for preview...
