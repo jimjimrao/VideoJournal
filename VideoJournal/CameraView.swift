@@ -8,31 +8,35 @@
 import SwiftUI
 import AVFoundation
 
+// Main ContentView
 struct ContentView: View {
     var body: some View {
         CameraView()
     }
 }
 
-
+// CameraView
 struct CameraView: View {
     @StateObject var camera = CameraModel()
+    
     var body: some View {
         ZStack{
+            // Camera preview
             CameraPreview(camera: camera)
                 .ignoresSafeArea(.all, edges: .all)
             
+            // Camera controls
             VStack{
-                if camera.isTaken{
+                // Retake button
+                if camera.isTaken {
                     HStack {
                         Spacer()
                         Button(action: camera.reTake, label: {
-                            Image(systemName:
-                                "arrow.triangle.2.circlepath.camera")
+                            Image(systemName: "arrow.triangle.2.circlepath.camera")
                                 .foregroundColor(.black)
                                 .padding()
                                 .background(Color.white)
-                                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+                                .clipShape(Circle())
                             }
                         )
                         .padding(.trailing, 10)
@@ -79,35 +83,25 @@ struct CameraView: View {
         })
     }
 }
- 
+
 // Camera Model
 class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var isTaken = false
-    
     @Published var session = AVCaptureSession()
-    
     @Published var alert = false
-    
     @Published var output = AVCapturePhotoOutput()
-    
     @Published var preview : AVCaptureVideoPreviewLayer!
-    
     @Published var isSaved = false
-    
     @Published var picData = Data(count: 0)
     
-    
+    // Check camera permissions and setup
     func Check() {
-//        first checking camera's got permission
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             setUp()
-            // setting up the session
         case .notDetermined:
-            // retrusting for permission
             AVCaptureDevice.requestAccess(for: .video) {
                 (status) in
-                
                 if status {
                     self.setUp()
                 }
@@ -119,54 +113,43 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             return
         }
     }
+    
+    // Setup camera
     func setUp() {
-        // settign up camera
-        
         do {
             
             // setting config
             self.session.beginConfiguration()
-            
-            // initialize camera
             let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
-            
             let input = try AVCaptureDeviceInput(device: device!)
-            
-            //checkin and adding to session
-            
             if self.session.canAddInput(input){
                 self.session.addInput(input)
             }
-            
             if self.session.canAddOutput(self.output){
                 self.session.addOutput(self.output)
             }
-            
             self.session.commitConfiguration()
-            
         }
         catch {
             print(error.localizedDescription)
         }
     }
     
-    // take and retake functions
-    
+    // Take picture
     func takePic() {
         DispatchQueue.global(qos: .background).async {
             self.output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
             DispatchQueue.main.async { Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { (timer) in self.session.stopRunning() } }
-            print("takePic has been called")
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
             }
         }
     }
     
+    // Retake picture
     func reTake(){
         DispatchQueue.global(qos: .background).async {
             self.session.startRunning()
-            
             DispatchQueue.main.async {
                 withAnimation{self.isTaken.toggle()}
                 
@@ -179,52 +162,43 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if error != nil {
-            print("photoOutput")
+            print("captureOutput error")
             return
         }
         print("pic taken")
         
-        guard let imageData = photo.fileDataRepresentation() else{return}
+        guard let imageData = photo.fileDataRepresentation() else { return }
         
         self.picData = imageData
     }
     
+    // Save picture
     func savePic(){
-        
         let image = UIImage(data: self.picData)!
-        
-        // saving image
-        
         UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        
         self.isSaved = true
-        
-        print("saved succesfully")
     }
-}
-// setting view for preview...
 
+}
+
+// Camera Preview
 struct CameraPreview: UIViewRepresentable {
-    func updateUIView(_ uiView: UIView, context: Context) {
-    
-    }
-    
     @ObservedObject var camera: CameraModel
     
     func makeUIView(context: Context) ->  UIView {
         let view = UIView(frame: UIScreen.main.bounds)
-        
         camera.preview = AVCaptureVideoPreviewLayer(session: camera.session)
         camera.preview.frame = view.frame
-        
         camera.preview.videoGravity = .resizeAspectFill
         view.layer.addSublayer(camera.preview)
-        
-        //starting session
-        camera.session.startRunning()   
+        camera.session.startRunning()
         return view
     }
+    
+    func updateUIView(_ uiView: UIView, context: Context) {
+    }
 }
+
 #Preview {
     ContentView()
 }
