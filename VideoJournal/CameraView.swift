@@ -19,7 +19,7 @@ struct CameraView: View {
     @StateObject var camera = CameraModel()
     var body: some View {
         ZStack{
-            Color.black
+            CameraPreview(camera: camera)
                 .ignoresSafeArea(.all, edges: .all)
             
             VStack{
@@ -90,6 +90,8 @@ class CameraModel: ObservableObject {
     
     @Published var output = AVCapturePhotoOutput()
     
+    @Published var preview : AVCaptureVideoPreviewLayer!
+    
     func Check() {
 //        first checking camera's got permission
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -143,7 +145,29 @@ class CameraModel: ObservableObject {
         }
     }
 }
+// setting view for preview...
 
+struct CameraPreview: UIViewRepresentable {
+    func updateUIView(_ uiView: UIView, context: Context) {
+    
+    }
+    
+    @ObservedObject var camera: CameraModel
+    
+    func makeUIView(context: Context) ->  UIView {
+        let view = UIView(frame: UIScreen.main.bounds)
+        
+        camera.preview = AVCaptureVideoPreviewLayer(session: camera.session)
+        camera.preview.frame = view.frame
+        
+        camera.preview.videoGravity = .resizeAspectFill
+        view.layer.addSublayer(camera.preview)
+        
+        //starting session
+        camera.session.startRunning()   
+        return view
+    }
+}
 #Preview {
     ContentView()
 }
