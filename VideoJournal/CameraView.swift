@@ -57,7 +57,7 @@ struct CameraView: View {
                         Spacer()
                         
                     }else{
-                        Button(action: {camera.isTaken.toggle()}, label: {
+                        Button(action: camera.takePic, label: {
                             ZStack{
                                 Circle()
                                     .fill(Color.white)
@@ -81,7 +81,7 @@ struct CameraView: View {
 }
  
 // Camera Model
-class CameraModel: ObservableObject {
+class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var isTaken = false
     
     @Published var session = AVCaptureSession()
@@ -143,6 +143,26 @@ class CameraModel: ObservableObject {
         catch {
             print(error.localizedDescription)
         }
+    }
+    
+    // take and retake functions
+    
+    func takePic() {
+        DispatchQueue.global(qos: .background).async {
+            self.output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
+            self.session.stopRunning()
+
+            DispatchQueue.main.async {
+                withAnimation{self.isTaken.toggle()}
+            }
+        }
+    }
+    
+    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+        if error != nil {
+            return
+        }
+        print("pic taken")
     }
 }
 // setting view for preview...
