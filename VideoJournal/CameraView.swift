@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AVFoundation
 
 struct ContentView: View {
     var body: some View {
@@ -73,12 +74,74 @@ struct CameraView: View {
                 .frame(height: 75)
             }
         }
+        .onAppear(perform: {
+            camera.Check()
+        })
     }
 }
  
 // Camera Model
 class CameraModel: ObservableObject {
     @Published var isTaken = false
+    
+    @Published var session = AVCaptureSession()
+    
+    @Published var alert = false
+    
+    @Published var output = AVCapturePhotoOutput()
+    
+    func Check() {
+//        first checking camera's got permission
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            setUp()
+            // setting up the session
+        case .notDetermined:
+            // retrusting for permission
+            AVCaptureDevice.requestAccess(for: .video) {
+                (status) in
+                
+                if status {
+                    self.setUp()
+                }
+            }
+        case .denied:
+            self.alert.toggle()
+            return
+        default:
+            return
+        }
+    }
+    func setUp() {
+        // settign up camera
+        
+        do {
+            
+            // setting config
+            self.session.beginConfiguration()
+            
+            // initialize camera
+            let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
+            
+            let input = try AVCaptureDeviceInput(device: device!)
+            
+            //checkin and adding to session
+            
+            if self.session.canAddInput(input){
+                self.session.addInput(input)
+            }
+            
+            if self.session.canAddOutput(self.output){
+                self.session.addOutput(self.output)
+            }
+            
+            self.session.commitConfiguration()
+            
+        }
+        catch {
+            print(error.localizedDescription)
+        }
+    }
 }
 
 #Preview {
