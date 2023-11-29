@@ -12,7 +12,7 @@
 		ED1D7CCD2B0EDCF800A5AA83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED1D7CCC2B0EDCF800A5AA83 /* Assets.xcassets */; };
 		ED1D7CD02B0EDCF800A5AA83 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED1D7CCF2B0EDCF800A5AA83 /* Preview Assets.xcassets */; };
 		ED6862622B1568A300BA8079 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6862612B1568A300BA8079 /* SettingsView.swift */; };
-		ED6862642B1568ED00BA8079 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6862632B1568ED00BA8079 /* CameraView.swift */; };
+		ED68626A2B16C5AD00BA8079 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6862692B16C5AD00BA8079 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,7 +22,7 @@
 		ED1D7CCC2B0EDCF800A5AA83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED1D7CCF2B0EDCF800A5AA83 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		ED6862612B1568A300BA8079 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		ED6862632B1568ED00BA8079 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		ED6862692B16C5AD00BA8079 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,7 +58,7 @@
 				ED1D7CC82B0EDCF700A5AA83 /* VideoJournalApp.swift */,
 				ED1D7CCA2B0EDCF700A5AA83 /* SuccessView.swift */,
 				ED6862612B1568A300BA8079 /* SettingsView.swift */,
-				ED6862632B1568ED00BA8079 /* CameraView.swift */,
+				ED6862692B16C5AD00BA8079 /* CameraView.swift */,
 				ED1D7CCC2B0EDCF800A5AA83 /* Assets.xcassets */,
 				ED1D7CCE2B0EDCF800A5AA83 /* Preview Content */,
 			);
@@ -146,7 +146,7 @@
 				ED6862622B1568A300BA8079 /* SettingsView.swift in Sources */,
 				ED1D7CCB2B0EDCF700A5AA83 /* SuccessView.swift in Sources */,
 				ED1D7CC92B0EDCF700A5AA83 /* VideoJournalApp.swift in Sources */,
-				ED6862642B1568ED00BA8079 /* CameraView.swift in Sources */,
+				ED68626A2B16C5AD00BA8079 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +283,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow permissions for camera usage";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -312,6 +313,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow permissions for camera usage";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

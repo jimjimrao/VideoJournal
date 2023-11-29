@@ -11,7 +11,7 @@ import SwiftUI
 struct VideoJournalApp: App {
     var body: some Scene {
         WindowGroup {
-            SuccessView()
+            CameraView()
         }
     }
 }
