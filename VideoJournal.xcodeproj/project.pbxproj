@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		963451312B180FA600C578AB /* MetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963451302B180FA600C578AB /* MetaData.swift */; };
+		963451332B180FC700C578AB /* MetaDataRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963451322B180FC700C578AB /* MetaDataRow.swift */; };
 		ED1D7CC92B0EDCF700A5AA83 /* VideoJournalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1D7CC82B0EDCF700A5AA83 /* VideoJournalApp.swift */; };
 		ED1D7CCB2B0EDCF700A5AA83 /* SuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1D7CCA2B0EDCF700A5AA83 /* SuccessView.swift */; };
 		ED1D7CCD2B0EDCF800A5AA83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED1D7CCC2B0EDCF800A5AA83 /* Assets.xcassets */; };
@@ -16,6 +18,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		963451302B180FA600C578AB /* MetaData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaData.swift; sourceTree = "<group>"; };
+		963451322B180FC700C578AB /* MetaDataRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetaDataRow.swift; sourceTree = "<group>"; };
 		ED1D7CC52B0EDCF700A5AA83 /* VideoJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED1D7CC82B0EDCF700A5AA83 /* VideoJournalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoJournalApp.swift; sourceTree = "<group>"; };
 		ED1D7CCA2B0EDCF700A5AA83 /* SuccessView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuccessView.swift; sourceTree = "<group>"; };
@@ -59,6 +63,8 @@
 				ED1D7CCA2B0EDCF700A5AA83 /* SuccessView.swift */,
 				ED6862612B1568A300BA8079 /* SettingsView.swift */,
 				ED6862692B16C5AD00BA8079 /* CameraView.swift */,
+				963451302B180FA600C578AB /* MetaData.swift */,
+				963451322B180FC700C578AB /* MetaDataRow.swift */,
 				ED1D7CCC2B0EDCF800A5AA83 /* Assets.xcassets */,
 				ED1D7CCE2B0EDCF800A5AA83 /* Preview Content */,
 			);
@@ -147,6 +153,8 @@
 				ED1D7CCB2B0EDCF700A5AA83 /* SuccessView.swift in Sources */,
 				ED1D7CC92B0EDCF700A5AA83 /* VideoJournalApp.swift in Sources */,
 				ED68626A2B16C5AD00BA8079 /* CameraView.swift in Sources */,
+				963451312B180FA600C578AB /* MetaData.swift in Sources */,
+				963451332B180FC700C578AB /* MetaDataRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
