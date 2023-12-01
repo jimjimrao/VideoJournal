@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SuccessView: View {
+    var uploadedTitle: String = "hello world"
     var body: some View {
         NavigationView {
             ZStack {
@@ -18,8 +19,12 @@ struct SuccessView: View {
                     Image("shield-tick")
                         .resizable()
                         .frame(width: 200, height: 200)
-                    Text("Upload Success!")
-                        .font(.largeTitle)
+                    Text(uploadedTitle)
+                        .font(.headline)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                    Text("was uploaded successfully!")
+                        .font(.subheadline)
                         .fontWeight(.bold)
                         .padding(.bottom, 300)
                         .foregroundColor(.black)

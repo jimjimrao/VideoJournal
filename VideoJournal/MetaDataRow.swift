@@ -10,7 +10,7 @@ import SwiftUI
 struct MetaDataRow: View {
     
     var dataLabel:String
-    @State var dataEntry:String
+    @Binding var dataEntry:String
     
     var body: some View {
         HStack(alignment: .center) {
@@ -28,7 +28,11 @@ struct MetaDataRow: View {
     }
 }
 
-
-#Preview {
-    MetaDataRow(dataLabel: "Title",dataEntry: "My Video")
+struct MetaDataRow_Previews: PreviewProvider {
+    @State static var previewDataEntry = "hi"
+    
+    static var previews: some View {
+        MetaDataRow(dataLabel: "Title", dataEntry: $previewDataEntry)
+    }
 }
+

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct MetaData: View {
-    
+    @State var journalTitle: String = "My Video"
+    @State var journalDescription: String = "My Description"
     var body: some View {
         NavigationStack {
             VStack {
@@ -20,12 +21,12 @@ struct MetaData: View {
                 
                 Spacer()
                 
-                MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
-                MetaDataRow(dataLabel: "Description", dataEntry: "Video Description")
+                MetaDataRow(dataLabel: "Title", dataEntry: $journalTitle)
+                MetaDataRow(dataLabel: "Description", dataEntry: $journalDescription)
                 
                 Spacer()
                 
-                NavigationLink(destination: SuccessView()
+                NavigationLink(destination: SuccessView(uploadedTitle: journalTitle)
                     .navigationBarBackButtonHidden(true)) {
                     Text("Upload")
                         .padding()
