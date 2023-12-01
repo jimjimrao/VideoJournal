@@ -16,15 +16,18 @@ struct MetaDataRow: View {
         HStack(alignment: .center) {
             Spacer()
             Text(dataLabel+":")
+                .font(.system(size: 20)) // Increase the font size
             Spacer()
             
             TextField(dataLabel, text: $dataEntry)
-                .padding(.leading)
+                .font(.system(size: 20)) // Increase the font size
+                .padding(10) // Increase the padding
                 .border(.secondary)
             Spacer()
         }
     }
 }
+
 
 #Preview {
     MetaDataRow(dataLabel: "Title",dataEntry: "My Video")
