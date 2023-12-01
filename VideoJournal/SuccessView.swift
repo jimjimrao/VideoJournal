@@ -20,7 +20,7 @@ struct SuccessView: View {
                         .resizable()
                         .frame(width: 200, height: 200)
                     Text(uploadedTitle)
-                        .font(.headline)
+                        .font(.title2)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
                     Text("was uploaded successfully!")
