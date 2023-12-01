@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct MetaData: View {
-    @State var journalTitle: String = "My Video"
-    @State var journalDescription: String = "My Description"
+    @State var journalTitle: String = ""
+    @State var journalDescription: String = ""
     var body: some View {
         NavigationStack {
             VStack {
@@ -32,6 +32,7 @@ struct MetaData: View {
                         .padding()
                     .border(/*@START_MENU_TOKEN@*/Color.black/*@END_MENU_TOKEN@*/)
                 }
+                .disabled(journalTitle.isEmpty) // Disable the button if journalTitle is empty
                 
                 Spacer()
             }
