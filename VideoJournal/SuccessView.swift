@@ -8,26 +8,38 @@
 import SwiftUI
 
 struct SuccessView: View {
+    var uploadedTitle: String = "hello world"
     var body: some View {
-        VStack {
-            Image("shield-tick")
-                .resizable()
-                .frame(width: 200, height: 200)
-            Text("Upload Success!")
-                .font(/*@START_MENU_TOKEN@*/.largeTitle/*@END_MENU_TOKEN@*/)
-                .fontWeight(.bold)
-                .padding(.bottom, 300)
-            Button(action: {}) {
-                Text("Continue")
-                    .padding()
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .background(.blue)
-                    .cornerRadius(10)
+        NavigationView {
+            ZStack {
+                // Background with white color extending into safe area
+                Color.white.ignoresSafeArea()
+                
+                VStack {
+                    Image("shield-tick")
+                        .resizable()
+                        .frame(width: 200, height: 200)
+                    Text(uploadedTitle)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.black)
+                    Text("was uploaded successfully!")
+                        .font(.subheadline)
+                        .fontWeight(.bold)
+                        .padding(.bottom, 300)
+                        .foregroundColor(.black)
+                    NavigationLink(destination: ContentView().navigationBarBackButtonHidden(true)) {
+                        Text("Continue")
+                            .padding()
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding()
             }
-            
         }
-        .padding()
     }
 }
 
