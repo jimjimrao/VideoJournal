@@ -116,22 +116,24 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     
     // Setup camera
     func setUp() {
-        do {
-            
-            // setting config
-            self.session.beginConfiguration()
-            let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
-            let input = try AVCaptureDeviceInput(device: device!)
-            if self.session.canAddInput(input){
-                self.session.addInput(input)
+        let deviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInDualCamera, .builtInWideAngleCamera], mediaType: .video, position: .back)
+        
+        if let device = deviceDiscoverySession.devices.first {
+            do {
+                self.session.beginConfiguration()
+                let input = try AVCaptureDeviceInput(device: device)
+                if self.session.canAddInput(input) {
+                    self.session.addInput(input)
+                }
+                if self.session.canAddOutput(self.output) {
+                    self.session.addOutput(self.output)
+                }
+                self.session.commitConfiguration()
+            } catch {
+                print(error.localizedDescription)
             }
-            if self.session.canAddOutput(self.output){
-                self.session.addOutput(self.output)
-            }
-            self.session.commitConfiguration()
-        }
-        catch {
-            print(error.localizedDescription)
+        } else {
+            print("No suitable device found")
         }
     }
     
