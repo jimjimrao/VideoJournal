@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SettingsView: View {
+    @State private var isSignedIn = false
+
     var body: some View {
         NavigationView {
             ZStack {
@@ -15,22 +17,42 @@ struct SettingsView: View {
                     .edgesIgnoringSafeArea(.all) // Extend the color to the edges of the screen
 
                 VStack {
-                    Button(action: {
-                        // Handle button press here
-                    }) {
-                        HStack {
-                            Image("google-logo") // Use your custom asset
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
-                                .foregroundColor(.white)
-                            Text("Sign in with Google")
-                                .foregroundColor(.black)
-                                .bold()
+                    HStack {
+                        Button(action: {
+                            // Handle button press here
+                            self.isSignedIn.toggle()
+                        }) {
+                            HStack {
+                                Image("google-logo") // Use your custom asset
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.white)
+                                Text(isSignedIn ? "Signed in" : "Sign in with Google")
+                                    .foregroundColor(.black)
+                                    .bold()
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
                         }
-                        .padding()
-                        .background(Color.white)
-                        .cornerRadius(10)
+                        .disabled(isSignedIn)
+
+                        if isSignedIn {
+                            Button(action: {
+                                // Handle X button press here
+                                self.isSignedIn = false
+                            }) {
+                                Image(systemName: "xmark") // Use system X button image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 24, height: 24)
+                                    .foregroundColor(.black)
+                            }
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
+                        }
                     }
                     Spacer() // This will push the button to the top
                 }
