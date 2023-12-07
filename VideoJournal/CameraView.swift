@@ -48,7 +48,8 @@ struct CameraView: View {
                     HStack{
     //                    if taken showing save and again take button...
                         if camera.isTaken{
-                            NavigationLink(destination: MetaData().navigationBarBackButtonHidden(true)) {
+                            
+                            NavigationLink(destination: MetaData(photoImage: Image("cat")).navigationBarBackButtonHidden(true)) {
                                 Text("Continue")
                                     .foregroundColor(.black)
                                     .fontWeight(.semibold)

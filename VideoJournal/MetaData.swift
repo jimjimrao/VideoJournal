@@ -8,13 +8,17 @@
 import SwiftUI
 
 struct MetaData: View {
+    @State var photoImage: Image
     @State var journalTitle: String = ""
     @State var journalDescription: String = ""
+    
+    
     var body: some View {
+        
         NavigationStack {
             VStack {
                 
-                Image("cat")
+                photoImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .padding()
@@ -42,5 +46,5 @@ struct MetaData: View {
 }
 
 #Preview {
-    MetaData()
+    MetaData(photoImage: Image("cat"))
 }
