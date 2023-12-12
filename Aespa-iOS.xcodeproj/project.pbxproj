@@ -15,6 +15,7 @@
 		9CE5B7E02A306F370058334D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7DF2A306F370058334D /* Assets.xcassets */; };
 		9CE5B7E32A306F370058334D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7E22A306F370058334D /* Preview Assets.xcassets */; };
 		9CE5B80B2A3070380058334D /* VideoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B80A2A3070380058334D /* VideoContentViewModel.swift */; };
+		ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = ED4CBBDE2B27E2D1007553CC /* Aespa */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0716FED42A3737D700B5AA1B /* Aespa in Frameworks */,
+				ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +118,7 @@
 			name = "Aespa-iOS";
 			packageProductDependencies = (
 				0716FED32A3737D700B5AA1B /* Aespa */,
+				ED4CBBDE2B27E2D1007553CC /* Aespa */,
 			);
 			productName = "Aespa-iOS";
 			productReference = 9CE5B7D82A306F350058334D /* Aespa-iOS.app */;
@@ -146,6 +149,7 @@
 			);
 			mainGroup = 9CE5B7CF2A306F350058334D;
 			packageReferences = (
+				ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */,
 			);
 			productRefGroup = 9CE5B7D92A306F350058334D /* Products */;
 			projectDirPath = "";
@@ -395,9 +399,25 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/enebin/Aespa.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
 		0716FED32A3737D700B5AA1B /* Aespa */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = Aespa;
+		};
+		ED4CBBDE2B27E2D1007553CC /* Aespa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */;
 			productName = Aespa;
 		};
 /* End XCSwiftPackageProductDependency section */
