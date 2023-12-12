@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct Aespa_iOSApp: App {
+struct VideoJournalApp: App {
     var body: some Scene {
         WindowGroup {
             VideoContentView()

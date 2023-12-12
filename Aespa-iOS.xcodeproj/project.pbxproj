@@ -10,7 +10,7 @@
 		0716FED02A37326600B5AA1B /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0716FECF2A37326600B5AA1B /* GalleryView.swift */; };
 		0716FED42A3737D700B5AA1B /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = 0716FED32A3737D700B5AA1B /* Aespa */; };
 		07778FF12A31E3A000B1DC6C /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07778FF02A31E3A000B1DC6C /* SettingView.swift */; };
-		9CE5B7DC2A306F350058334D /* Aespa_iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B7DB2A306F350058334D /* Aespa_iOSApp.swift */; };
+		9CE5B7DC2A306F350058334D /* VideoJournalApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */; };
 		9CE5B7DE2A306F350058334D /* VideoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B7DD2A306F350058334D /* VideoContentView.swift */; };
 		9CE5B7E02A306F370058334D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7DF2A306F370058334D /* Assets.xcassets */; };
 		9CE5B7E32A306F370058334D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7E22A306F370058334D /* Preview Assets.xcassets */; };
@@ -23,7 +23,7 @@
 		07778FF02A31E3A000B1DC6C /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		07F81CEE2A49A21B00DEDB04 /* Aespa */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Aespa; path = ..; sourceTree = "<group>"; };
 		9CE5B7D82A306F350058334D /* Aespa-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Aespa-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CE5B7DB2A306F350058334D /* Aespa_iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Aespa_iOSApp.swift; sourceTree = "<group>"; };
+		9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoJournalApp.swift; sourceTree = "<group>"; };
 		9CE5B7DD2A306F350058334D /* VideoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentView.swift; sourceTree = "<group>"; };
 		9CE5B7DF2A306F370058334D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9CE5B7E22A306F370058334D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				9CE5B80E2A316BC00058334D /* Aespa-iOS.entitlements */,
-				9CE5B7DB2A306F350058334D /* Aespa_iOSApp.swift */,
+				9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */,
 				9CE5B7DD2A306F350058334D /* VideoContentView.swift */,
 				0716FECF2A37326600B5AA1B /* GalleryView.swift */,
 				07778FF02A31E3A000B1DC6C /* SettingView.swift */,
@@ -179,7 +179,7 @@
 			files = (
 				9CE5B7DE2A306F350058334D /* VideoContentView.swift in Sources */,
 				07778FF12A31E3A000B1DC6C /* SettingView.swift in Sources */,
-				9CE5B7DC2A306F350058334D /* Aespa_iOSApp.swift in Sources */,
+				9CE5B7DC2A306F350058334D /* VideoJournalApp.swift in Sources */,
 				9CE5B80B2A3070380058334D /* VideoContentViewModel.swift in Sources */,
 				0716FED02A37326600B5AA1B /* GalleryView.swift in Sources */,
 			);
