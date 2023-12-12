@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9CE5B7D72A306F350058334D"
-               BuildableName = "Aespa-iOS.app"
-               BlueprintName = "Aespa-iOS"
-               ReferencedContainer = "container:Aespa-iOS.xcodeproj">
+               BuildableName = "VideoJournal.app"
+               BlueprintName = "VideoJournal"
+               ReferencedContainer = "container:VideoJournal.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -37,7 +37,7 @@
                BlueprintIdentifier = "9CE5B7E72A306F370058334D"
                BuildableName = "Aespa-iOSTests.xctest"
                BlueprintName = "Aespa-iOSTests"
-               ReferencedContainer = "container:Aespa-iOS.xcodeproj">
+               ReferencedContainer = "container:VideoJournal.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -48,7 +48,7 @@
                BlueprintIdentifier = "9CE5B7F12A306F370058334D"
                BuildableName = "Aespa-iOSUITests.xctest"
                BlueprintName = "Aespa-iOSUITests"
-               ReferencedContainer = "container:Aespa-iOS.xcodeproj">
+               ReferencedContainer = "container:VideoJournal.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -68,9 +68,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9CE5B7D72A306F350058334D"
-            BuildableName = "Aespa-iOS.app"
-            BlueprintName = "Aespa-iOS"
-            ReferencedContainer = "container:Aespa-iOS.xcodeproj">
+            BuildableName = "VideoJournal.app"
+            BlueprintName = "VideoJournal"
+            ReferencedContainer = "container:VideoJournal.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9CE5B7D72A306F350058334D"
-            BuildableName = "Aespa-iOS.app"
-            BlueprintName = "Aespa-iOS"
-            ReferencedContainer = "container:Aespa-iOS.xcodeproj">
+            BuildableName = "VideoJournal.app"
+            BlueprintName = "VideoJournal"
+            ReferencedContainer = "container:VideoJournal.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
