@@ -1,8 +1,8 @@
 //
-//  VideoJournalApp.swift
-//  VideoJournal
+//  Aespa_iOSApp.swift
+//  Aespa-iOS
 //
-//  Created by Jimmy Rao on 11/22/23.
+//  Created by 이영빈 on 2023/06/07.
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 struct VideoJournalApp: App {
     var body: some Scene {
         WindowGroup {
-            CameraView()
+            VideoContentView()
         }
     }
 }
