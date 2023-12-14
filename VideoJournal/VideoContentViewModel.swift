@@ -22,7 +22,7 @@ class VideoContentViewModel: ObservableObject {
 //        return aespaSession.interactivePreview(option: option)
     }
     
-    @Published var isTaken = true
+    @Published var isTaken = false
     
     private var subscription = Set<AnyCancellable>()
     
