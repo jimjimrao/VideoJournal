@@ -100,7 +100,6 @@ struct VideoContentView: View {
                                 }
                             case .photo:
                                 viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
-                                viewModel.isTaken.toggle()
                             }
                         }
                         Spacer()
