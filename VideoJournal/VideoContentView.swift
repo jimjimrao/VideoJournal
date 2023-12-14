@@ -31,28 +31,37 @@ struct VideoContentView: View {
             VStack {
                 ZStack(alignment: .center) {
                     // Mode change
-                    Picker("Capture Modes", selection: $captureMode) {
-                        Text("Video").tag(AssetType.video)
-                        Text("Photo").tag(AssetType.photo)
-                    }
-                    .pickerStyle(.segmented)
-                    .background(Color.black.opacity(0.7))
-                    .cornerRadius(8)
+                    if !viewModel.isTaken {
+                        Picker("Capture Modes", selection: $captureMode) {
+                            Text("Video").tag(AssetType.video)
+                            Text("Photo").tag(AssetType.photo)
+                        }
+                        .pickerStyle(.segmented)
+                        .background(Color.black.opacity(0.7))
+                        .cornerRadius(8)
                     .frame(width: 200)
+                    } else {
+                        /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+                    }
                     
                     HStack {
                         Spacer()
                         
-                        Button(action: { showSetting = true }) {
-                            Image(systemName: "gear")
-                                .resizable()
-                                .foregroundColor(.white)
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
+                        if !viewModel.isTaken {
+                            Button(action: { showSetting = true }) {
+                                Image(systemName: "gear")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
 
-                        }
-                        .padding(20)
+                            }
+                            .padding(20)
                         .contentShape(Rectangle())
+                        } else {
+                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+                            // TODO: Put RETAKE BUTTON HERE
+                        }
                     }
                 }
                 
@@ -61,35 +70,44 @@ struct VideoContentView: View {
                 ZStack {
                     HStack {
                         // Album thumbnail + button
-                        Button(action: { showGallery = true }) {
-                            let coverImage = (
-                                captureMode == .video
-                                ? viewModel.videoAlbumCover
-                                : viewModel.photoAlbumCover)
-                            ?? Image("")
-                            
-                            roundRectangleShape(with: coverImage, size: 80)
-                        }
-                        .shadow(radius: 5)
+                        if !viewModel.isTaken {
+                            Button(action: { showGallery = true }) {
+                                let coverImage = (
+                                    captureMode == .video
+                                    ? viewModel.videoAlbumCover
+                                    : viewModel.photoAlbumCover)
+                                ?? Image("")
+                                
+                                roundRectangleShape(with: coverImage, size: 80)
+                            }
+                            .shadow(radius: 5)
                         .contentShape(Rectangle())
+                        } else {
+                            EmptyView()
+                        }
                         
                         Spacer()
                         
                         // Position change + button
-                        Button(action: {
-                            viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
-                            isFront.toggle()
-                        }) {
-                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                .resizable()
-                                .foregroundColor(.white)
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .padding(20)
-                                .padding(.trailing, 20)
-                        }
-                        .shadow(radius: 5)
+                        if !viewModel.isTaken {
+                            Button(action: {
+                                viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
+                                isFront.toggle()
+                            }) {
+                                Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .padding(20)
+                                    .padding(.trailing, 20)
+                            }
+                            .shadow(radius: 5)
                         .contentShape(Rectangle())
+                        } else {
+                            // TODO: Put the continue button to metadata page here
+                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+                        }
                     }
                     
                     // Shutter + button
