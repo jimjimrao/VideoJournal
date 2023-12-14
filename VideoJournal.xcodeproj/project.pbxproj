@@ -76,6 +76,7 @@
 				9CE5B80E2A316BC00058334D /* VideoJournal.entitlements */,
 				9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */,
 				9CE5B7DD2A306F350058334D /* VideoContentView.swift */,
+				9CE5B80A2A3070380058334D /* VideoContentViewModel.swift */,
 				0716FECF2A37326600B5AA1B /* GalleryView.swift */,
 				07778FF02A31E3A000B1DC6C /* SettingView.swift */,
 				96A7E1E42B2A7A1B001B8244 /* CameraView.swift */,
@@ -83,7 +84,6 @@
 				96A7E1E62B2A7A1B001B8244 /* MetaDataRow.swift */,
 				96A7E1E52B2A7A1B001B8244 /* SettingsView.swift */,
 				96A7E1E22B2A7A1B001B8244 /* SuccessView.swift */,
-				9CE5B80A2A3070380058334D /* VideoContentViewModel.swift */,
 				9CE5B7DF2A306F370058334D /* Assets.xcassets */,
 				9CE5B7E12A306F370058334D /* Preview Content */,
 			);
@@ -137,7 +137,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1510;
 				TargetAttributes = {
 					9CE5B7D72A306F350058334D = {
 						CreatedOnToolsVersion = 14.3;
@@ -234,6 +234,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -294,6 +295,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -335,12 +337,13 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = rao.Jimmy.VideoJournal;
+				PRODUCT_BUNDLE_IDENTIFIER = "rao.Jimmy.VideoJournal-IOS16.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -372,12 +375,13 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = rao.Jimmy.VideoJournal;
+				PRODUCT_BUNDLE_IDENTIFIER = "rao.Jimmy.VideoJournal-IOS16.0";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
