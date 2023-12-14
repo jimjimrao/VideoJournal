@@ -39,9 +39,9 @@ struct VideoContentView: View {
                         .pickerStyle(.segmented)
                         .background(Color.black.opacity(0.7))
                         .cornerRadius(8)
-                    .frame(width: 200)
+                        .frame(width: 200)
                     } else {
-                        /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
+                        EmptyView()
                     }
                     
                     HStack {
@@ -54,13 +54,12 @@ struct VideoContentView: View {
                                     .foregroundColor(.white)
                                     .scaledToFit()
                                     .frame(width: 30, height: 30)
-
                             }
                             .padding(20)
-                        .contentShape(Rectangle())
+                            .contentShape(Rectangle())
                         } else {
-                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
-                            // TODO: Put RETAKE BUTTON HERE
+                            EmptyView()
+                            // TODO: Put retake button here
                         }
                     }
                 }
@@ -70,8 +69,8 @@ struct VideoContentView: View {
                 ZStack {
                     HStack {
                         // Album thumbnail + button
-                        if !viewModel.isTaken {
-                            Button(action: { showGallery = true }) {
+                        Button(action: { if !viewModel.isTaken { showGallery = true } }) {
+                            if !viewModel.isTaken {
                                 let coverImage = (
                                     captureMode == .video
                                     ? viewModel.videoAlbumCover
@@ -79,21 +78,36 @@ struct VideoContentView: View {
                                 ?? Image("")
                                 
                                 roundRectangleShape(with: coverImage, size: 80)
+                            } else {
+                                EmptyView()
                             }
-                            .shadow(radius: 5)
-                        .contentShape(Rectangle())
-                        } else {
-                            EmptyView()
                         }
+                        .frame(width: 80, height: 80)
+                        .shadow(radius: 5)
+                        .contentShape(Rectangle())
                         
+                        Spacer()
+                        // Shutter + button
+                        recordingButtonShape(width: 60).onTapGesture {
+                            switch captureMode {
+                            case .video:
+                                if isRecording {
+                                    viewModel.aespaSession.stopRecording()
+                                    isRecording = false
+                                } else {
+                                    viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
+                                    isRecording = true
+                                }
+                            case .photo:
+                                viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                                viewModel.isTaken.toggle()
+                            }
+                        }
                         Spacer()
                         
                         // Position change + button
-                        if !viewModel.isTaken {
-                            Button(action: {
-                                viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
-                                isFront.toggle()
-                            }) {
+                        Button(action: { if !viewModel.isTaken { viewModel.aespaSession.common(.position(position: isFront ? .back : .front)); isFront.toggle() } }) {
+                            if !viewModel.isTaken {
                                 Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
                                     .resizable()
                                     .foregroundColor(.white)
@@ -101,31 +115,17 @@ struct VideoContentView: View {
                                     .frame(width: 50, height: 50)
                                     .padding(20)
                                     .padding(.trailing, 20)
-                            }
-                            .shadow(radius: 5)
-                        .contentShape(Rectangle())
-                        } else {
-                            // TODO: Put the continue button to metadata page here
-                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
-                        }
-                    }
-                    
-                    // Shutter + button
-                    recordingButtonShape(width: 60).onTapGesture {
-                        switch captureMode {
-                        case .video:
-                            if isRecording {
-                                viewModel.aespaSession.stopRecording()
-                                isRecording = false
                             } else {
-                                viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
-                                isRecording = true
+                                EmptyView()
+                                // TODO: Put the continue button to metadata page here
                             }
-                        case .photo:
-                            viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
                         }
+                        .frame(width: 80, height: 80)
+                        .shadow(radius: 5)
+                        .contentShape(Rectangle())
                     }
                 }
+                .padding()
             }
         }
         .sheet(isPresented: $showSetting) {
