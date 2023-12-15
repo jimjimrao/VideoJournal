@@ -31,7 +31,7 @@ struct VideoContentView: View {
             VStack {
                 ZStack(alignment: .center) {
                     // Mode change
-                    if !viewModel.isTaken {
+                    if !viewModel.isTaken && !isRecording {
                         Picker("Capture Modes", selection: $captureMode) {
                             Text("Video").tag(AssetType.video)
                             Text("Photo").tag(AssetType.photo)
@@ -44,22 +44,33 @@ struct VideoContentView: View {
                         EmptyView()
                     }
                     
-                    HStack {
-                        Spacer()
-                        
-                        if !viewModel.isTaken {
-                            Button(action: { showSetting = true }) {
-                                Image(systemName: "gear")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .scaledToFit()
-                                    .frame(width: 30, height: 30)
+                    if !isRecording {
+                        HStack {
+                            Spacer()
+                            
+                            if !viewModel.isTaken {
+                                Button(action: { showSetting = true }) {
+                                    Image(systemName: "gear")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                }
+                                .padding(20)
+                                .contentShape(Rectangle())
+                            } else {
+                                // Retake button
+                                Button(action: {viewModel.isTaken = false}, label: {
+                                    Image(systemName: "arrow.uturn.forward.circle")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                                })
+                                .padding(20)
+                                .contentShape(Rectangle())
                             }
-                            .padding(20)
-                            .contentShape(Rectangle())
-                        } else {
-                            EmptyView()
-                            // TODO: Put retake button here
                         }
                     }
                 }
@@ -70,7 +81,7 @@ struct VideoContentView: View {
                     HStack {
                         // Album thumbnail + button
                         Button(action: { if !viewModel.isTaken { showGallery = true } }) {
-                            if !viewModel.isTaken {
+                            if !viewModel.isTaken && !isRecording {
                                 let coverImage = (
                                     captureMode == .video
                                     ? viewModel.videoAlbumCover
@@ -88,40 +99,73 @@ struct VideoContentView: View {
                         
                         Spacer()
                         // Shutter + button
-                        recordingButtonShape(width: 60).onTapGesture {
-                            switch captureMode {
-                            case .video:
-                                if isRecording {
-                                    viewModel.aespaSession.stopRecording()
-                                    isRecording = false
-                                } else {
-                                    viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
-                                    isRecording = true
+                        if !viewModel.isTaken {
+                            recordingButtonShape(width: 60).onTapGesture {
+                                switch captureMode {
+                                case .video:
+                                    if isRecording {
+                                        viewModel.aespaSession.stopRecording()
+                                        isRecording = false
+                                        viewModel.isTaken = true
+                                    } else {
+                                        viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
+                                        isRecording = true
+                                    }
+                                case .photo:
+                                    viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                                    viewModel.isTaken = true
                                 }
-                            case .photo:
-                                viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
                             }
+                        } else {
+                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
                         }
                         Spacer()
                         
-                        // Position change + button
-                        Button(action: { if !viewModel.isTaken { viewModel.aespaSession.common(.position(position: isFront ? .back : .front)); isFront.toggle() } }) {
-                            if !viewModel.isTaken {
-                                Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 50)
-                                    .padding(20)
-                                    .padding(.trailing, 20)
+                        
+                        ZStack {
+                            // Flip Camera Button
+                            if !viewModel.isTaken && !isRecording {
+                                Button(action: {
+                                    viewModel.aespaSession.common(.position(position: isFront ? .back : .front));
+                                    isFront.toggle()
+                                }) {
+                                    Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 50)
+                                        .padding(20)
+                                        .padding(.trailing, 20)
+                                }
+                                .frame(width: 80, height: 80)
+                                .shadow(radius: 5)
+                                .contentShape(Rectangle())
+                            } else {
+                                Rectangle()
+                                        .frame(width: 80, height: 80)
+                                        .opacity(0)
+                            }
+                            
+                            // Continue Button
+                            if !isRecording && viewModel.isTaken {
+                                Button(action: {
+                                    // Action to perform when the continue button is tapped
+                                    // Add your code here
+                                }) {
+                                    Text("Continue")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .background(Color.blue)
+                                        .cornerRadius(10)
+                                }
+                                .padding()
                             } else {
                                 EmptyView()
-                                // TODO: Put the continue button to metadata page here
+                                    .frame(width: 80, height: 80)
                             }
                         }
-                        .frame(width: 80, height: 80)
-                        .shadow(radius: 5)
-                        .contentShape(Rectangle())
+
+                        
                     }
                 }
                 .padding()
