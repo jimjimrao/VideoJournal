@@ -71,22 +71,7 @@ struct VideoContentView: View {
                                 .padding(20)
                                 .contentShape(Rectangle())
                             }
-                            .padding(20)
-                            .contentShape(Rectangle())
-                        } else {
-                            // Retake button
-                            Button(action: {viewModel.isTaken = false}, label: {
-                                Image(systemName: "arrow.uturn.forward.circle")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .scaledToFit()
-                                    .frame(width: 30, height: 30)
-                                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                            })
-                            .padding(20)
-                            .contentShape(Rectangle())
                         }
-                    }
                     }
                 }
                 
@@ -137,9 +122,13 @@ struct VideoContentView: View {
                         }
                         Spacer()
                         
-                        // Position change + button
-                        Button(action: { if !viewModel.isTaken { viewModel.aespaSession.common(.position(position: isFront ? .back : .front)); isFront.toggle() } }) {
-                            if !viewModel.isTaken {
+                        
+                        if !viewModel.isTaken {
+                            // Flip Camera Button
+                            Button(action: {
+                                viewModel.aespaSession.common(.position(position: isFront ? .back : .front));
+                                isFront.toggle()
+                            }) {
                                 Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
                                     .resizable()
                                     .foregroundColor(.white)
@@ -147,14 +136,25 @@ struct VideoContentView: View {
                                     .frame(width: 50, height: 50)
                                     .padding(20)
                                     .padding(.trailing, 20)
-                            } else {
-                                EmptyView()
-                                // TODO: Put the continue button to metadata page here
                             }
+                            .frame(width: 80, height: 80)
+                            .shadow(radius: 5)
+                            .contentShape(Rectangle())
+                        } else {
+                            // Continue Button
+                            Button(action: {
+                                // Action to perform when the continue button is tapped
+                                // Add your code here
+                            }) {
+                                Text("Continue")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.blue)
+                                    .cornerRadius(10)
+                            }
+                            .padding()
                         }
-                        .frame(width: 80, height: 80)
-                        .shadow(radius: 5)
-                        .contentShape(Rectangle())
+                        
                     }
                 }
                 .padding()
