@@ -58,8 +58,14 @@ struct VideoContentView: View {
                             .padding(20)
                             .contentShape(Rectangle())
                         } else {
-                            EmptyView()
-                            // TODO: Put retake button here
+                            // Retake button
+                            Button(action: {viewModel.isTaken = false}, label: {
+                                Image(systemName: "arrow.uturn.forward.circle")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                            })
                         }
                     }
                 }
@@ -100,6 +106,7 @@ struct VideoContentView: View {
                                 }
                             case .photo:
                                 viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                                viewModel.isTaken.toggle()
                             }
                         }
                         Spacer()
