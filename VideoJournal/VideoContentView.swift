@@ -46,15 +46,30 @@ struct VideoContentView: View {
                     
                     if !isRecording {
                         HStack {
-                        Spacer()
-                        
-                        if !viewModel.isTaken {
-                            Button(action: { showSetting = true }) {
-                                Image(systemName: "gear")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .scaledToFit()
-                                    .frame(width: 30, height: 30)
+                            Spacer()
+                            
+                            if !viewModel.isTaken {
+                                Button(action: { showSetting = true }) {
+                                    Image(systemName: "gear")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                }
+                                .padding(20)
+                                .contentShape(Rectangle())
+                            } else {
+                                // Retake button
+                                Button(action: {viewModel.isTaken = false}, label: {
+                                    Image(systemName: "arrow.uturn.forward.circle")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                        .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                                })
+                                .padding(20)
+                                .contentShape(Rectangle())
                             }
                             .padding(20)
                             .contentShape(Rectangle())
