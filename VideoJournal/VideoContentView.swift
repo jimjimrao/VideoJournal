@@ -31,28 +31,36 @@ struct VideoContentView: View {
             VStack {
                 ZStack(alignment: .center) {
                     // Mode change
-                    Picker("Capture Modes", selection: $captureMode) {
-                        Text("Video").tag(AssetType.video)
-                        Text("Photo").tag(AssetType.photo)
+                    if !viewModel.isTaken {
+                        Picker("Capture Modes", selection: $captureMode) {
+                            Text("Video").tag(AssetType.video)
+                            Text("Photo").tag(AssetType.photo)
+                        }
+                        .pickerStyle(.segmented)
+                        .background(Color.black.opacity(0.7))
+                        .cornerRadius(8)
+                        .frame(width: 200)
+                    } else {
+                        EmptyView()
                     }
-                    .pickerStyle(.segmented)
-                    .background(Color.black.opacity(0.7))
-                    .cornerRadius(8)
-                    .frame(width: 200)
                     
                     HStack {
                         Spacer()
                         
-                        Button(action: { showSetting = true }) {
-                            Image(systemName: "gear")
-                                .resizable()
-                                .foregroundColor(.white)
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-
+                        if !viewModel.isTaken {
+                            Button(action: { showSetting = true }) {
+                                Image(systemName: "gear")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                            }
+                            .padding(20)
+                            .contentShape(Rectangle())
+                        } else {
+                            EmptyView()
+                            // TODO: Put retake button here
                         }
-                        .padding(20)
-                        .contentShape(Rectangle())
                     }
                 }
                 
@@ -61,53 +69,62 @@ struct VideoContentView: View {
                 ZStack {
                     HStack {
                         // Album thumbnail + button
-                        Button(action: { showGallery = true }) {
-                            let coverImage = (
-                                captureMode == .video
-                                ? viewModel.videoAlbumCover
-                                : viewModel.photoAlbumCover)
-                            ?? Image("")
-                            
-                            roundRectangleShape(with: coverImage, size: 80)
+                        Button(action: { if !viewModel.isTaken { showGallery = true } }) {
+                            if !viewModel.isTaken {
+                                let coverImage = (
+                                    captureMode == .video
+                                    ? viewModel.videoAlbumCover
+                                    : viewModel.photoAlbumCover)
+                                ?? Image("")
+                                
+                                roundRectangleShape(with: coverImage, size: 80)
+                            } else {
+                                EmptyView()
+                            }
                         }
+                        .frame(width: 80, height: 80)
                         .shadow(radius: 5)
                         .contentShape(Rectangle())
                         
                         Spacer()
+                        // Shutter + button
+                        recordingButtonShape(width: 60).onTapGesture {
+                            switch captureMode {
+                            case .video:
+                                if isRecording {
+                                    viewModel.aespaSession.stopRecording()
+                                    isRecording = false
+                                } else {
+                                    viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
+                                    isRecording = true
+                                }
+                            case .photo:
+                                viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                            }
+                        }
+                        Spacer()
                         
                         // Position change + button
-                        Button(action: {
-                            viewModel.aespaSession.common(.position(position: isFront ? .back : .front))
-                            isFront.toggle()
-                        }) {
-                            Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                .resizable()
-                                .foregroundColor(.white)
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .padding(20)
-                                .padding(.trailing, 20)
+                        Button(action: { if !viewModel.isTaken { viewModel.aespaSession.common(.position(position: isFront ? .back : .front)); isFront.toggle() } }) {
+                            if !viewModel.isTaken {
+                                Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                    .resizable()
+                                    .foregroundColor(.white)
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 50)
+                                    .padding(20)
+                                    .padding(.trailing, 20)
+                            } else {
+                                EmptyView()
+                                // TODO: Put the continue button to metadata page here
+                            }
                         }
+                        .frame(width: 80, height: 80)
                         .shadow(radius: 5)
                         .contentShape(Rectangle())
                     }
-                    
-                    // Shutter + button
-                    recordingButtonShape(width: 60).onTapGesture {
-                        switch captureMode {
-                        case .video:
-                            if isRecording {
-                                viewModel.aespaSession.stopRecording()
-                                isRecording = false
-                            } else {
-                                viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
-                                isRecording = true
-                            }
-                        case .photo:
-                            viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
-                        }
-                    }
                 }
+                .padding()
             }
         }
         .sheet(isPresented: $showSetting) {

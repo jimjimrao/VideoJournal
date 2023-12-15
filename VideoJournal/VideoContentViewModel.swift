@@ -22,6 +22,8 @@ class VideoContentViewModel: ObservableObject {
 //        return aespaSession.interactivePreview(option: option)
     }
     
+    @Published var isTaken = false
+    
     private var subscription = Set<AnyCancellable>()
     
     @Published var videoAlbumCover: Image?
