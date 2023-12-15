@@ -65,7 +65,10 @@ struct VideoContentView: View {
                                     .foregroundColor(.white)
                                     .scaledToFit()
                                     .frame(width: 30, height: 30)
+                                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                             })
+                            .padding(20)
+                            .contentShape(Rectangle())
                         }
                     }
                 }
