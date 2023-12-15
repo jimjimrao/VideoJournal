@@ -81,7 +81,7 @@ struct VideoContentView: View {
                     HStack {
                         // Album thumbnail + button
                         Button(action: { if !viewModel.isTaken { showGallery = true } }) {
-                            if !viewModel.isTaken {
+                            if !viewModel.isTaken && !isRecording {
                                 let coverImage = (
                                     captureMode == .video
                                     ? viewModel.videoAlbumCover
@@ -110,7 +110,6 @@ struct VideoContentView: View {
                                     } else {
                                         viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
                                         isRecording = true
-                                        
                                     }
                                 case .photo:
                                     viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
@@ -123,37 +122,49 @@ struct VideoContentView: View {
                         Spacer()
                         
                         
-                        if !viewModel.isTaken {
+                        ZStack {
                             // Flip Camera Button
-                            Button(action: {
-                                viewModel.aespaSession.common(.position(position: isFront ? .back : .front));
-                                isFront.toggle()
-                            }) {
-                                Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
-                                    .resizable()
-                                    .foregroundColor(.white)
-                                    .scaledToFit()
-                                    .frame(width: 50, height: 50)
-                                    .padding(20)
-                                    .padding(.trailing, 20)
+                            if !viewModel.isTaken && !isRecording {
+                                Button(action: {
+                                    viewModel.aespaSession.common(.position(position: isFront ? .back : .front));
+                                    isFront.toggle()
+                                }) {
+                                    Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                                        .resizable()
+                                        .foregroundColor(.white)
+                                        .scaledToFit()
+                                        .frame(width: 50, height: 50)
+                                        .padding(20)
+                                        .padding(.trailing, 20)
+                                }
+                                .frame(width: 80, height: 80)
+                                .shadow(radius: 5)
+                                .contentShape(Rectangle())
+                            } else {
+                                Rectangle()
+                                        .frame(width: 80, height: 80)
+                                        .opacity(0)
                             }
-                            .frame(width: 80, height: 80)
-                            .shadow(radius: 5)
-                            .contentShape(Rectangle())
-                        } else {
+                            
                             // Continue Button
-                            Button(action: {
-                                // Action to perform when the continue button is tapped
-                                // Add your code here
-                            }) {
-                                Text("Continue")
-                                    .foregroundColor(.white)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .cornerRadius(10)
+                            if !isRecording && viewModel.isTaken {
+                                Button(action: {
+                                    // Action to perform when the continue button is tapped
+                                    // Add your code here
+                                }) {
+                                    Text("Continue")
+                                        .foregroundColor(.white)
+                                        .padding()
+                                        .background(Color.blue)
+                                        .cornerRadius(10)
+                                }
+                                .padding()
+                            } else {
+                                EmptyView()
+                                    .frame(width: 80, height: 80)
                             }
-                            .padding()
                         }
+
                         
                     }
                 }
