@@ -31,7 +31,7 @@ struct VideoContentView: View {
             VStack {
                 ZStack(alignment: .center) {
                     // Mode change
-                    if !viewModel.isTaken {
+                    if !viewModel.isTaken && !isRecording {
                         Picker("Capture Modes", selection: $captureMode) {
                             Text("Video").tag(AssetType.video)
                             Text("Photo").tag(AssetType.photo)
@@ -44,7 +44,8 @@ struct VideoContentView: View {
                         EmptyView()
                     }
                     
-                    HStack {
+                    if !isRecording {
+                        HStack {
                         Spacer()
                         
                         if !viewModel.isTaken {
@@ -70,6 +71,7 @@ struct VideoContentView: View {
                             .padding(20)
                             .contentShape(Rectangle())
                         }
+                    }
                     }
                 }
                 
@@ -97,20 +99,26 @@ struct VideoContentView: View {
                         
                         Spacer()
                         // Shutter + button
-                        recordingButtonShape(width: 60).onTapGesture {
-                            switch captureMode {
-                            case .video:
-                                if isRecording {
-                                    viewModel.aespaSession.stopRecording()
-                                    isRecording = false
-                                } else {
-                                    viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
-                                    isRecording = true
+                        if !viewModel.isTaken {
+                            recordingButtonShape(width: 60).onTapGesture {
+                                switch captureMode {
+                                case .video:
+                                    if isRecording {
+                                        viewModel.aespaSession.stopRecording()
+                                        isRecording = false
+                                        viewModel.isTaken = true
+                                    } else {
+                                        viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
+                                        isRecording = true
+                                        
+                                    }
+                                case .photo:
+                                    viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                                    viewModel.isTaken = true
                                 }
-                            case .photo:
-                                viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
-                                viewModel.isTaken.toggle()
                             }
+                        } else {
+                            /*@START_MENU_TOKEN@*/EmptyView()/*@END_MENU_TOKEN@*/
                         }
                         Spacer()
                         
