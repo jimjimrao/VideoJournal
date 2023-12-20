@@ -17,10 +17,15 @@ struct MetaDataRow: View {
             Spacer()
             Text(dataLabel+":")
             Spacer()
+            if #available(iOS 15.0, *) {
+                TextField(dataLabel, text: $dataEntry)
+                    .padding(.leading)
+                    .border(.secondary)
+            } else {
+                TextField(dataLabel, text: $dataEntry)
+                    .padding(.leading)
+            }
             
-            TextField(dataLabel, text: $dataEntry)
-                .padding(.leading)
-                .border(.secondary)
             Spacer()
         }
     }
