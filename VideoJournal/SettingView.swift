@@ -9,7 +9,7 @@ import SwiftUI
 import AVFoundation
 
 struct SettingView: View {
-    @ObservedObject var viewModel: VideoContentViewModel
+    @ObservedObject var viewModel: CameraViewModel
 
     @State private var quality: AVCaptureSession.Preset
     @State private var focusMode: AVCaptureDevice.FocusMode
@@ -18,7 +18,7 @@ struct SettingView: View {
     
     @State private var flashMode: AVCaptureDevice.FlashMode
     
-    init(contentViewModel viewModel: VideoContentViewModel) {
+    init(contentViewModel viewModel: CameraViewModel) {
         self.viewModel = viewModel
         
         self.quality = viewModel.aespaSession.avCaptureSession.sessionPreset

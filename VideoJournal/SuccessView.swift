@@ -28,7 +28,7 @@ struct SuccessView: View {
                         .fontWeight(.bold)
                         .padding(.bottom, 300)
                         .foregroundColor(.black)
-                    NavigationLink(destination: VideoContentView().navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: CameraView().navigationBarBackButtonHidden(true)) {
                         Text("Continue")
                             .padding()
                             .foregroundColor(.white)
