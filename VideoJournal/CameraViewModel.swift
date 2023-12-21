@@ -11,7 +11,7 @@ import Foundation
 
 import Aespa
 
-class VideoContentViewModel: ObservableObject {
+class CameraViewModel: ObservableObject {
     let aespaSession: AespaSession
     
     var preview: some View {
@@ -103,7 +103,7 @@ class VideoContentViewModel: ObservableObject {
 }
 
 
-extension VideoContentViewModel {
+extension CameraViewModel {
     // Example for using custom session tuner
     struct WideColorCameraTuner: AespaSessionTuning {
         func tune<T>(_ session: T) throws where T : AespaCoreSessionRepresentable {

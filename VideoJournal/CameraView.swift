@@ -1,219 +1,230 @@
 //
-//  CameraView.swift
-//  VideoJournal
+//  VideoContentView.swift
+//  Aespa-iOS
 //
-//  Created by Jimmy Rao on 11/28/23.
+//  Created by 이영빈 on 2023/06/07.
 //
 
+import Aespa
 import SwiftUI
-import AVFoundation
 
-// Main ContentView
-struct ContentView: View {
-    var body: some View {
-        CameraView()
-    }
+enum AssetType {
+    case video
+    case photo
 }
 
-// CameraView
 struct CameraView: View {
-    @StateObject var camera = CameraModel()
+    @State var isRecording = false
+    @State var isFront = false
+    @State var showSetting = false
+    @State var showGallery = false
+    @State var captureMode: AssetType = .video
+    @ObservedObject private var viewModel = CameraViewModel()
     
     var body: some View {
         NavigationStack {
-            ZStack{
-                // Camera preview
-                CameraPreview(camera: camera)
-                    .ignoresSafeArea(.all, edges: .all)
-                
-                // Camera controls
-                VStack{
-                    // Retake button
-                    if camera.isTaken {
-                        HStack {
-                            Spacer()
-                            Button(action: camera.reTake, label: {
-                                Image(systemName: "arrow.triangle.2.circlepath.camera")
-                                    .foregroundColor(.black)
-                                    .padding()
-                                    .background(Color.white)
-                                    .clipShape(Circle())
-                                }
-                            )
-                            .padding(.trailing, 10)
-                        }
-                    }
+            ZStack {
+                viewModel.preview
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    modeChangeView
                     Spacer()
-                    
-                    HStack{
-    //                    if taken showing save and again take button...
-                        if camera.isTaken{
-                            Button(action: {if !camera.isSaved{camera.savePic()}}, label: {
-                                Text(camera.isSaved ? "Saved" :"Save")
-                                    .foregroundColor(.black)
-                                    .fontWeight(.semibold)
-                                    .padding(.vertical, 10)
-                                    .padding(.horizontal, 20)
-                                    .background(Color.white)
-                                    .clipShape(Capsule())
-                                }
-                            )
-                            .padding(.leading)
-                            Spacer()
-                            
-                        }else{
-                            Button(action: camera.takePic, label: {
-                                ZStack{
-                                    Circle()
-                                        .fill(Color.white)
-                                        .frame(width: 65, height: 65)
-                                    
-                                    Circle()
-                                        .stroke(Color.white, lineWidth:2)
-                                        .frame(width: 75, height: 75)
-                                    }
-                                }
-                            )
-                        }
-                    }
-                    .frame(height: 75)
+                    controlPanelView
                 }
-            }.toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    NavigationLink(destination: SettingsView()) {
-                        Image(systemName: "gearshape")
-                    }
+                .sheet(isPresented: $showSetting) {
+                    SettingView(contentViewModel: viewModel)
+                }
+                .sheet(isPresented: $showGallery) {
+                    GalleryView(mediaType: $captureMode, contentViewModel: viewModel)
                 }
             }
-            .onAppear(perform: {
-                camera.Check()
+        }
+    }
+    
+    @ViewBuilder
+    var modeChangeView: some View {
+        ZStack(alignment: .center) {
+            if !viewModel.isTaken && !isRecording {
+                Picker("Capture Modes", selection: $captureMode) {
+                    Text("Video").tag(AssetType.video)
+                    Text("Photo").tag(AssetType.photo)
+                }
+                .pickerStyle(.segmented)
+                .background(Color.black.opacity(0.7))
+                .cornerRadius(8)
+                .frame(width: 200)
+            } else {
+                EmptyView()
+            }
+            if !isRecording {
+                settingsButton
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var settingsButton: some View {
+        HStack {
+            Spacer()
+            if !viewModel.isTaken {
+                Button(action: { showSetting = true }) {
+                    Image(systemName: "gear")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                }
+                .padding(20)
+                .contentShape(Rectangle())
+            } else {
+                retakeButton
+            }
+        }
+    }
+    
+    @ViewBuilder
+    var retakeButton: some View {
+        Button(action: {viewModel.isTaken = false}, label: {
+            Image(systemName: "arrow.uturn.forward.circle")
+                .resizable()
+                .foregroundColor(.white)
+                .scaledToFit()
+                .frame(width: 30, height: 30)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
         })
+        .padding(20)
+        .contentShape(Rectangle())
+    }
+    
+    @ViewBuilder
+    var controlPanelView: some View {
+        ZStack {
+            HStack {
+                albumThumbnailButton
+                Spacer()
+                shutterButton
+                Spacer()
+                flipCameraButton
+            }
+            .padding()
         }
     }
-}
-
-// Camera Model
-class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
-    @Published var isTaken = false
-    @Published var session = AVCaptureSession()
-    @Published var alert = false
-    @Published var output = AVCapturePhotoOutput()
-    @Published var preview : AVCaptureVideoPreviewLayer!
-    @Published var isSaved = false
-    @Published var picData = Data(count: 0)
     
-    // Check camera permissions and setup
-    func Check() {
-        switch AVCaptureDevice.authorizationStatus(for: .video) {
-        case .authorized:
-            setUp()
-        case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video) {
-                (status) in
-                if status {
-                    self.setUp()
+    @ViewBuilder
+    var albumThumbnailButton: some View {
+        Button(action: { if !viewModel.isTaken { showGallery = true } }) {
+            if !viewModel.isTaken && !isRecording {
+                let coverImage = ( captureMode == .video ? viewModel.videoAlbumCover : viewModel.photoAlbumCover) ?? Image("")
+                roundRectangleShape(with: coverImage, size: 80)
+            } else {
+                EmptyView()
+            }
+        }
+        .frame(width: 80, height: 80)
+        .shadow(radius: 5)
+        .contentShape(Rectangle())
+    }
+    
+    @ViewBuilder
+    var shutterButton: some View {
+        if !viewModel.isTaken {
+            recordingButtonShape(width: 60).onTapGesture {
+                switch captureMode {
+                case .video:
+                    if isRecording {
+                        viewModel.aespaSession.stopRecording()
+                        isRecording = false
+                        viewModel.isTaken = true
+                    } else {
+                        viewModel.aespaSession.startRecording(autoVideoOrientationEnabled: true)
+                        isRecording = true
+                    }
+                case .photo:
+                    viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                    viewModel.isTaken = true
                 }
             }
-        case .denied:
-            self.alert.toggle()
-            return
-        default:
-            return
+        } else {
+            EmptyView()
         }
     }
     
-    // Setup camera
-    func setUp() {
-        do {
+    @ViewBuilder
+    var flipCameraButton: some View {
+        ZStack {
+            if !viewModel.isTaken && !isRecording {
+                Button(action: { viewModel.aespaSession.common(.position(position: isFront ? .back : .front)); isFront.toggle() }) {
+                    Image(systemName: "arrow.triangle.2.circlepath.camera.fill")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .scaledToFit()
+                        .frame(width: 50, height: 50)
+                        .padding(20)
+                        .padding(.trailing, 20)
+                }
+                .frame(width: 80, height: 80)
+                .shadow(radius: 5)
+                .contentShape(Rectangle())
+            } else {
+                Rectangle()
+                    .frame(width: 80, height: 80)
+                    .opacity(0)
+            }
             
-            // setting config
-            self.session.beginConfiguration()
-            let device = AVCaptureDevice.default(.builtInDualCamera, for: .video, position: .back)
-            let input = try AVCaptureDeviceInput(device: device!)
-            if self.session.canAddInput(input){
-                self.session.addInput(input)
-            }
-            if self.session.canAddOutput(self.output){
-                self.session.addOutput(self.output)
-            }
-            self.session.commitConfiguration()
-        }
-        catch {
-            print(error.localizedDescription)
-        }
-    }
-    
-    // Take picture
-    func takePic() {
-        DispatchQueue.global(qos: .background).async {
-            self.output.capturePhoto(with: AVCapturePhotoSettings(), delegate: self)
-            DispatchQueue.main.async { Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { (timer) in self.session.stopRunning() } }
-            DispatchQueue.main.async {
-                withAnimation{self.isTaken.toggle()}
-            }
-        }
-    }
-    
-    // Retake picture
-    func reTake(){
-        DispatchQueue.global(qos: .background).async {
-            self.session.startRunning()
-            DispatchQueue.main.async {
-                withAnimation{self.isTaken.toggle()}
+            // Continue Button
+            if !isRecording && viewModel.isTaken {
+                NavigationLink(destination: MetaData()) {
+                    Text("Continue")
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                }
+                .padding()
+                .onTapGesture {
+                    //viewModel.isTaken = false
+                }
+                Spacer()
                 
-                // clearing
-                
-                self.isSaved = false
+            } else {
+                EmptyView()
+                    .frame(width: 80, height: 80)
             }
         }
     }
     
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
-        if error != nil {
-            print("captureOutput error")
-            return
+    @ViewBuilder
+    func roundRectangleShape(with image: Image, size: CGFloat) -> some View {
+        image
+            .resizable()
+            .scaledToFill()
+            .frame(width: size, height: size, alignment: .center)
+            .clipped()
+            .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(.white, lineWidth: 1)
+            )
+            .padding(20)
+    }
+    
+    @ViewBuilder
+    func recordingButtonShape(width: CGFloat) -> some View {
+        ZStack {
+            Circle()
+                .strokeBorder(isRecording ? .red : .white, lineWidth: 3)
+                .frame(width: width)
+            Circle()
+                .fill(isRecording ? .red : .white)
+                .frame(width: width * 0.8)
         }
-        print("pic taken")
-        
-        guard let imageData = photo.fileDataRepresentation() else { return }
-        
-        self.picData = imageData
-    }
-    
-    // Save picture
-    func savePic(){
-        let image = UIImage(data: self.picData)!
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        self.isSaved = true
-    }
-
-}
-
-// Camera Preview
-struct CameraPreview: UIViewRepresentable {
-    @ObservedObject var camera: CameraModel
-    
-    func makeUIView(context: Context) ->  UIView {
-        let view = UIView(frame: UIScreen.main.bounds)
-        
-        camera.preview = AVCaptureVideoPreviewLayer(session: camera.session)
-        camera.preview.frame = view.frame
-        
-        camera.preview.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(camera.preview)
-        
-        // Starting session on a background thread
-        DispatchQueue.global(qos: .userInitiated).async {
-            camera.session.startRunning()
-        }
-        
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIView, context: Context) {
+        .frame(height: width)
     }
 }
 
-#Preview {
-    ContentView()
+struct VideoContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        CameraView()
+    }
 }

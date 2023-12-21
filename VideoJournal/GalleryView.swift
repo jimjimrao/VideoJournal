@@ -9,13 +9,13 @@ import Aespa
 import SwiftUI
 
 struct GalleryView: View {
-    @ObservedObject var viewModel: VideoContentViewModel
+    @ObservedObject var viewModel: CameraViewModel
     
     @Binding private var mediaType: AssetType
     
     init(
         mediaType: Binding<AssetType>,
-        contentViewModel viewModel: VideoContentViewModel
+        contentViewModel viewModel: CameraViewModel
     ) {
         self._mediaType = mediaType
         self.viewModel = viewModel
