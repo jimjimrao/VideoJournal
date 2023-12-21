@@ -22,20 +22,22 @@ struct VideoContentView: View {
     @ObservedObject private var viewModel = VideoContentViewModel()
     
     var body: some View {
-        ZStack {
-            viewModel.preview
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                .edgesIgnoringSafeArea(.all)
-            VStack {
-                modeChangeView
-                Spacer()
-                controlPanelView
-            }
-            .sheet(isPresented: $showSetting) {
-                SettingView(contentViewModel: viewModel)
-            }
-            .sheet(isPresented: $showGallery) {
-                GalleryView(mediaType: $captureMode, contentViewModel: viewModel)
+        NavigationStack {
+            ZStack {
+                viewModel.preview
+                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                    .edgesIgnoringSafeArea(.all)
+                VStack {
+                    modeChangeView
+                    Spacer()
+                    controlPanelView
+                }
+                .sheet(isPresented: $showSetting) {
+                    SettingView(contentViewModel: viewModel)
+                }
+                .sheet(isPresented: $showGallery) {
+                    GalleryView(mediaType: $captureMode, contentViewModel: viewModel)
+                }
             }
         }
     }
@@ -172,17 +174,19 @@ struct VideoContentView: View {
             
             // Continue Button
             if !isRecording && viewModel.isTaken {
-                Button(action: {
-                    // Action to perform when the continue button is tapped
-                    // Add your code here
-                }) {
+                NavigationLink(destination: MetaData()) {
                     Text("Continue")
-                        .foregroundColor(.white)
                         .padding()
+                        .foregroundColor(.white)
                         .background(Color.blue)
                         .cornerRadius(10)
                 }
                 .padding()
+                .onTapGesture {
+                    //viewModel.isTaken = false
+                }
+                Spacer()
+                
             } else {
                 EmptyView()
                     .frame(width: 80, height: 80)
