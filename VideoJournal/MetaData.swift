@@ -6,21 +6,31 @@
 //
 
 import SwiftUI
+import Aespa
 
 struct MetaData: View {
+    var capturedPhoto: PhotoFile?
     
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 VStack {
-                    
-                    Image("cat")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8) // Set relative frame size
-                        .padding()
-                    
-                    Spacer()
+                    Group {
+                        if let photo = capturedPhoto {
+                            Image(uiImage: photo.image)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                        } else {
+                            Text("No photo captured")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8)
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
                     
                     MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
                     MetaDataRow(dataLabel: "Description", dataEntry: "Video Description")
@@ -31,7 +41,6 @@ struct MetaData: View {
                         Text("Continue")
                             .padding()
                             .foregroundColor(.white)
-                            .frame(maxWidth: 200)
                             .background(Color.blue)
                             .cornerRadius(10)
                     }
@@ -40,7 +49,6 @@ struct MetaData: View {
                 }
             }
         }
-        
     }
 }
 

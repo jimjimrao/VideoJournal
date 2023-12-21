@@ -183,7 +183,7 @@ struct CameraView: View {
             
             // Continue Button
             if !isRecording && viewModel.isTaken {
-                NavigationLink(destination: MetaData()) {
+                NavigationLink(destination: MetaData(capturedPhoto: viewModel.capturedPhoto)) {
                     Text("Continue")
                         .padding()
                         .foregroundColor(.white)
