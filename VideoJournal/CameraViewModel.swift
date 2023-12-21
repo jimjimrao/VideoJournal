@@ -29,6 +29,9 @@ class CameraViewModel: ObservableObject {
     @Published var videoAlbumCover: Image?
     @Published var photoAlbumCover: Image?
     
+    @Published var capturedPhoto: PhotoFile?
+
+    
     @Published var videoFiles: [VideoAsset] = []
     @Published var photoFiles: [PhotoAsset] = []
     
