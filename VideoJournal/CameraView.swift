@@ -141,7 +141,16 @@ struct CameraView: View {
                         isRecording = true
                     }
                 case .photo:
-                    viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true)
+                    viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true) { result in
+                        switch result {
+                        case .success(let photo):
+                            viewModel.capturedPhoto = photo // Assign the captured photo to the variable
+                            // Handle the captured photo or perform further actions
+                        case .failure(let error):
+                            print("Error capturing photo: \(error)")
+                            // Handle the error appropriately
+                        }
+                    }
                     viewModel.isTaken = true
                 }
             }
