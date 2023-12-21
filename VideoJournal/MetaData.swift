@@ -11,30 +11,33 @@ struct MetaData: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                
-                Image("cat")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding()
-                
-                Spacer()
-                
-                MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
-                MetaDataRow(dataLabel: "Description", dataEntry: "Video Description")
-                
-                Spacer()
-                
-                NavigationLink(destination: SuccessView().navigationBarBackButtonHidden(true)) {
-                    Text("Continue")
+            GeometryReader { geometry in
+                VStack {
+                    
+                    Image("cat")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: geometry.size.width * 0.8, height: geometry.size.width * 0.8) // Set relative frame size
                         .padding()
-                        .foregroundColor(.white)
-                        .frame(maxWidth: 200)
-                        .background(Color.blue)
-                        .cornerRadius(10)
+                    
+                    Spacer()
+                    
+                    MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
+                    MetaDataRow(dataLabel: "Description", dataEntry: "Video Description")
+                    
+                    Spacer()
+                    
+                    NavigationLink(destination: SuccessView().navigationBarBackButtonHidden(true)) {
+                        Text("Continue")
+                            .padding()
+                            .foregroundColor(.white)
+                            .frame(maxWidth: 200)
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
+                    
+                    Spacer()
                 }
-                
-                Spacer()
             }
         }
         
