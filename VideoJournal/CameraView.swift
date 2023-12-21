@@ -144,7 +144,9 @@ struct CameraView: View {
                     viewModel.aespaSession.capturePhoto(autoVideoOrientationEnabled: true) { result in
                         switch result {
                         case .success(let photo):
-                            viewModel.capturedPhoto = photo // Assign the captured photo to the variable
+                            DispatchQueue.main.async {
+                                viewModel.capturedPhoto = photo // Assign the captured photo to the variable
+                            }
                             // Handle the captured photo or perform further actions
                         case .failure(let error):
                             print("Error capturing photo: \(error)")
