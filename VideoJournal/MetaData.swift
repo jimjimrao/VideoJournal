@@ -37,8 +37,8 @@ struct MetaData: View {
                     
                     Spacer()
                     
-                    NavigationLink(destination: SuccessView().navigationBarBackButtonHidden(true)) {
-                        Text("Continue")
+                    NavigationLink(destination: CameraView().navigationBarBackButtonHidden(true)) {
+                        Text("Upload to Google Drive")
                             .padding()
                             .foregroundColor(.white)
                             .background(Color.blue)
