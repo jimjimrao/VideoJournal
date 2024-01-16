@@ -24,9 +24,18 @@ struct CameraView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                viewModel.preview
-                    .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-                    .edgesIgnoringSafeArea(.all)
+                if !viewModel.isTaken {
+                    viewModel.preview
+                        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                        .edgesIgnoringSafeArea(.all)
+                } else {
+                    let takenImage = viewModel.capturedPhoto?.thumbnailImage
+                    
+                    takenImage?
+                        .resizable()
+                        .scaledToFill()
+                }
+                
                 VStack {
                     modeChangeView
                     Spacer()
