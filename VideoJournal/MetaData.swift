@@ -10,6 +10,7 @@ import Aespa
 
 struct MetaData: View {
     var capturedPhoto: PhotoFile?
+    @State private var title: String = ""
     
     var body: some View {
         NavigationView {
@@ -32,7 +33,13 @@ struct MetaData: View {
                             .stroke(Color.black, lineWidth: 1)
                     )
                     
-                    MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
+                    Form {
+                        TextField(
+                            "Title",
+                            text: $title
+                        )
+                        .disableAutocorrection(true)
+                    }
                     
                     Spacer()
                     
