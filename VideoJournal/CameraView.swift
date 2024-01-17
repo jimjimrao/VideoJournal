@@ -29,11 +29,22 @@ struct CameraView: View {
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
                         .edgesIgnoringSafeArea(.all)
                 } else {
-                    let takenImage = viewModel.capturedPhoto?.thumbnailImage
+                    switch captureMode {
+                    case .video:
+                        let takenVideo =
+                            viewModel.videoAlbumCover
+                        
+                        takenVideo?
+                            .resizable()
+                            .scaledToFill()
+                    case .photo:
+                        let takenPhoto = viewModel.capturedPhoto?.thumbnailImage
+                        
+                        takenPhoto?
+                            .resizable()
+                            .scaledToFill()
+                    }
                     
-                    takenImage?
-                        .resizable()
-                        .scaledToFill()
                 }
                 
                 VStack {
