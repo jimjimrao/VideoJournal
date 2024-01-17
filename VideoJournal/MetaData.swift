@@ -33,7 +33,6 @@ struct MetaData: View {
                     )
                     
                     MetaDataRow(dataLabel: "Title", dataEntry: "My Video")
-                    MetaDataRow(dataLabel: "Description", dataEntry: "Video Description")
                     
                     Spacer()
                     
