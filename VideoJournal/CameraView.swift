@@ -31,8 +31,7 @@ struct CameraView: View {
                 } else {
                     switch captureMode {
                     case .video:
-                        let takenVideo =
-                            viewModel.videoAlbumCover
+                        let takenVideo = viewModel.videoAlbumCover
                         
                         takenVideo?
                             .resizable()
@@ -205,7 +204,8 @@ struct CameraView: View {
             
             // Continue Button
             if !isRecording && viewModel.isTaken {
-                NavigationLink(destination: MetaData(capturedPhoto: viewModel.capturedPhoto)) {
+                let coverImage = ( captureMode == .video ? viewModel.videoAlbumCover : viewModel.photoAlbumCover) ?? Image("")
+                NavigationLink(destination: MetaData(capturedPhoto: coverImage)) {
                     Text("Continue")
                         .padding()
                         .foregroundColor(.white)
