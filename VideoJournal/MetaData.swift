@@ -9,7 +9,7 @@ import SwiftUI
 import Aespa
 
 struct MetaData: View {
-    var capturedPhoto: PhotoFile?
+    var capturedPhoto: Image?
     @State private var title: String = ""
     
     var body: some View {
@@ -17,8 +17,8 @@ struct MetaData: View {
             GeometryReader { geometry in
                 VStack {
                     Group {
-                        if let photo = capturedPhoto {
-                            Image(uiImage: photo.image)
+                        if capturedPhoto != Image("") {
+                            capturedPhoto?
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                         } else {
