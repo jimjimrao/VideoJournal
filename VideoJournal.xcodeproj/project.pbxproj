@@ -19,6 +19,8 @@
 		9CE5B7E32A306F370058334D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7E22A306F370058334D /* Preview Assets.xcassets */; };
 		9CE5B80B2A3070380058334D /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B80A2A3070380058334D /* CameraViewModel.swift */; };
 		ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = ED4CBBDE2B27E2D1007553CC /* Aespa */; };
+		ED6A335C2B6861BD00D2FB29 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */; };
+		ED6A335E2B6861BD00D2FB29 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +45,8 @@
 			files = (
 				0716FED42A3737D700B5AA1B /* Aespa in Frameworks */,
 				ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */,
+				ED6A335C2B6861BD00D2FB29 /* GoogleSignIn in Frameworks */,
+				ED6A335E2B6861BD00D2FB29 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +122,8 @@
 			packageProductDependencies = (
 				0716FED32A3737D700B5AA1B /* Aespa */,
 				ED4CBBDE2B27E2D1007553CC /* Aespa */,
+				ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */,
+				ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */,
 			);
 			productName = "Aespa-iOS";
 			productReference = 9CE5B7D82A306F350058334D /* VideoJournal.app */;
@@ -149,6 +155,7 @@
 			mainGroup = 9CE5B7CF2A306F350058334D;
 			packageReferences = (
 				ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */,
+				ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 9CE5B7D92A306F350058334D /* Products */;
 			projectDirPath = "";
@@ -414,6 +421,14 @@
 				minimumVersion = 0.5.0;
 			};
 		};
+		ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -425,6 +440,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */;
 			productName = Aespa;
+		};
+		ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
