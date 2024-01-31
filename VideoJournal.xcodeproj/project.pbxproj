@@ -36,6 +36,7 @@
 		9CE5B7E22A306F370058334D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9CE5B80A2A3070380058334D /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		9CE5B80E2A316BC00058334D /* VideoJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoJournal.entitlements; sourceTree = "<group>"; };
+		ED6A335F2B6863FB00D2FB29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +74,7 @@
 		9CE5B7DA2A306F350058334D /* VideoJournal */ = {
 			isa = PBXGroup;
 			children = (
+				ED6A335F2B6863FB00D2FB29 /* Info.plist */,
 				9CE5B80E2A316BC00058334D /* VideoJournal.entitlements */,
 				9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */,
 				9CE5B7DD2A306F350058334D /* CameraView.swift */,
@@ -326,6 +328,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VideoJournal/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Use camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use mic";
@@ -364,6 +367,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VideoJournal/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Use camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use mic";
