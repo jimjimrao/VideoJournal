@@ -11,6 +11,8 @@ import GoogleSignInSwift
 
 struct SettingView: View {
     @ObservedObject var viewModel: CameraViewModel
+    @EnvironmentObject var authViewModel: AuthenticationViewModel
+    @ObservedObject var vm = GoogleSignInButtonViewModel()
 
     @State private var quality: AVCaptureSession.Preset
     @State private var focusMode: AVCaptureDevice.FocusMode
@@ -33,7 +35,9 @@ struct SettingView: View {
     var body: some View {
         List {
             Section(header: Text("Common")) {
-                GoogleSignInButton(action: viewModel.handleSignInButton)
+                
+                GoogleSignInButton(viewModel: vm, action: authViewModel.signIn)
+                
                 Picker("Quality", selection: $quality) {
                     Text("Low").tag(AVCaptureSession.Preset.low)
                     Text("Medium").tag(AVCaptureSession.Preset.medium)
