@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AVFoundation
+import GoogleSignInSwift
 
 struct SettingView: View {
     @ObservedObject var viewModel: CameraViewModel
@@ -32,6 +33,7 @@ struct SettingView: View {
     var body: some View {
         List {
             Section(header: Text("Common")) {
+                GoogleSignInButton(action: viewModel.handleSignInButton)
                 Picker("Quality", selection: $quality) {
                     Text("Low").tag(AVCaptureSession.Preset.low)
                     Text("Medium").tag(AVCaptureSession.Preset.medium)
