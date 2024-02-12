@@ -134,6 +134,24 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
+    
+
+    func checkAndRequestScope(user: GIDGoogleUser, presentingViewController: UIViewController) {
+        let driveScope = "https://www.googleapis.com/auth/drive.readonly"
+        
+        // Read GIDClientID from Info.plist
+        guard let clientID = Bundle.main.object(forInfoDictionaryKey: "GIDClientID") as? String else {
+            fatalError("Unable to retrieve GIDClientID from Info.plist")
+        }
+        
+        // Check if the Drive scope has already been granted.
+        if let grantedScopes = user.grantedScopes, grantedScopes.contains(driveScope) {
+            // The Drive scope has been granted, proceed to make an API call
+            print("Drive scope has been granted.")
+        } else {
+            print("Drive scope has been granted after requesting.")
+            }
+        }
 }
 
 
