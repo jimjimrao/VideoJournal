@@ -23,6 +23,8 @@ class CameraViewModel: ObservableObject {
 //        return aespaSession.interactivePreview(option: option)
     }
     
+    @Published var userName: String? = nil
+    
     @Published var isTaken = false
     
     private var subscription = Set<AnyCancellable>()
@@ -110,9 +112,18 @@ class CameraViewModel: ObservableObject {
            let rootViewController = windowScene.windows.first?.rootViewController {
             GIDSignIn.sharedInstance.signIn(
                 withPresenting: rootViewController) { signInResult, error in
-                guard let result = signInResult else {
-                    // Inspect error
-                    return
+                    guard let user = signInResult?.user, error == nil else {
+                        // Handle error
+                        print("Error signing in: \(error?.localizedDescription ?? "Unknown error")")
+                        return
+                    }
+                    // If sign in succeeded, store the user's full name and print it
+                    if let name = user.profile?.name {
+                        self.userName = name
+                        print("Successfully signed in as \(name)")
+                    } else {
+                        print("Successfully signed in, but name is not available.")
+                    }
                 }
                 // If sign in succeeded, display the app's main content View.
             }
