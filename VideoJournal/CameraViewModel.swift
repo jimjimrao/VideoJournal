@@ -24,6 +24,7 @@ class CameraViewModel: ObservableObject {
     }
     
     @Published var userName: String? = nil
+    @Published var currentUser: GIDGoogleUser?
     
     @Published var isTaken = false
     
@@ -111,12 +112,16 @@ class CameraViewModel: ObservableObject {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootViewController = windowScene.windows.first?.rootViewController {
             GIDSignIn.sharedInstance.signIn(
-                withPresenting: rootViewController) { signInResult, error in
+                withPresenting: rootViewController) { [weak self] signInResult, error in
+                    guard let self = self else { return }
                     guard let user = signInResult?.user, error == nil else {
                         // Handle error
                         print("Error signing in: \(error?.localizedDescription ?? "Unknown error")")
                         return
                     }
+                    // Save the signed-in user to the currentUser property
+                    self.currentUser = user
+                    
                     // If sign in succeeded, store the user's full name and print it
                     if let name = user.profile?.name {
                         self.userName = name
