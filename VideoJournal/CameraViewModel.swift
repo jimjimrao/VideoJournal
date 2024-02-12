@@ -110,20 +110,20 @@ class CameraViewModel: ObservableObject {
     
     func handleSignInButton() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let rootViewController = windowScene.windows.first?.rootViewController {
+           let rootViewController = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
             GIDSignIn.sharedInstance.signIn(
                 withPresenting: rootViewController) { [weak self] signInResult, error in
                     guard let self = self else { return }
-                    guard let user = signInResult?.user, error == nil else {
+                    guard let signInResult = signInResult, error == nil else {
                         // Handle error
                         print("Error signing in: \(error?.localizedDescription ?? "Unknown error")")
                         return
                     }
                     // Save the signed-in user to the currentUser property
-                    self.currentUser = user
+                    self.currentUser = signInResult.user
                     
                     // If sign in succeeded, store the user's full name and print it
-                    if let name = user.profile?.name {
+                    if let name = signInResult.user.profile?.name {
                         self.userName = name
                         print("Successfully signed in as \(name)")
                     } else {
@@ -134,6 +134,7 @@ class CameraViewModel: ObservableObject {
             }
         }
     }
+
     
 
     func checkAndRequestScope(user: GIDGoogleUser, presentingViewController: UIViewController) {
