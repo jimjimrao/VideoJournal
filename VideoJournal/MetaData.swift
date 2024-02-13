@@ -9,6 +9,7 @@ import SwiftUI
 import Aespa
 
 struct MetaData: View {
+    @ObservedObject var viewModel = CameraViewModel()
     var capturedPhoto: Image?
     @State private var title: String = ""
     
