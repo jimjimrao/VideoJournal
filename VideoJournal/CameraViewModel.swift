@@ -138,6 +138,13 @@ class CameraViewModel: ObservableObject {
                     self.userOAuth2Token = self.currentUser?.accessToken
                     print("ouath2 Access Token: \(self.userOAuth2Token?.tokenString ?? "no oauth2 token")")
                     
+                    // Log granted scopes
+                    if let grantedScopes = signInResult.user.grantedScopes {
+                        print("Granted Scopes: \(grantedScopes.joined(separator: ", "))")
+                    } else {
+                        print("No scopes were granted.")
+                    }
+                    
                     
                     if let name = signInResult.user.profile?.name {
                         self.userName = name
@@ -226,6 +233,16 @@ class CameraViewModel: ObservableObject {
         
         // Set the request body
         request.httpBody = requestData
+        
+        // Debugging: Print the entire request
+        print("HTTP Method: \(request.httpMethod ?? "No HTTP method")")
+        print("URL: \(request.url?.absoluteString ?? "No URL")")
+        print("Headers: \(request.allHTTPHeaderFields ?? [:])")
+        if let body = request.httpBody, let bodyString = String(data: body, encoding: .utf8) {
+            print("Body: \(bodyString)")
+        } else {
+            print("Body: Unable to print body data")
+        }
         
         // Perform the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
