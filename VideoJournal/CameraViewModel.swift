@@ -25,6 +25,7 @@ class CameraViewModel: ObservableObject {
     
     @Published var userName: String? = nil
     @Published var currentUser: GIDGoogleUser?
+    @Published var userOAuth2Token: GIDToken?
     
     @Published var isTaken = false
     
@@ -122,7 +123,19 @@ class CameraViewModel: ObservableObject {
                     // Save the signed-in user to the currentUser property
                     self.currentUser = signInResult.user
                     
-                    // If sign in succeeded, store the user's full name and print it
+                    // Print data
+                    print("User profile:", self.currentUser!)
+                    print("User ID: \(self.currentUser!.userID!)")
+                    print("User Email: \(self.currentUser?.profile?.email ?? "no email")")
+                    print("User Name: \(self.currentUser?.profile?.name ?? "no name")")
+                    print("Access Token: \(self.currentUser?.idToken?.tokenString ?? "no token")")
+                    
+                    
+                    // Save the OAuth2.0 Token
+                    self.userOAuth2Token = self.currentUser?.accessToken
+                    print("ouath2 Access Token: \(self.userOAuth2Token?.tokenString ?? "no oauth2 token")")
+                    
+                    
                     if let name = signInResult.user.profile?.name {
                         self.userName = name
                         print("Successfully signed in as \(name)")
@@ -130,8 +143,7 @@ class CameraViewModel: ObservableObject {
                         print("Successfully signed in, but name is not available.")
                     }
                 }
-                // If sign in succeeded, display the app's main content View.
-            }
+            // If sign in succeeded, display the app's main content View.
         }
     }
 
@@ -151,8 +163,8 @@ class CameraViewModel: ObservableObject {
             print("Drive scope has been granted.")
         } else {
             print("Drive scope has been granted after requesting.")
-            }
         }
+    }
 }
 
 
