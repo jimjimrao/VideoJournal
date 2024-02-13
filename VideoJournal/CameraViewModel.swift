@@ -10,6 +10,7 @@ import SwiftUI
 import Foundation
 
 import Aespa
+import GoogleSignIn
 
 class CameraViewModel: ObservableObject {
     let aespaSession: AespaSession
@@ -101,6 +102,20 @@ class CameraViewModel: ObservableObject {
         Task(priority: .utility) {
             let fetchedFiles = await aespaSession.fetchPhotoFiles()
             DispatchQueue.main.async { self.photoFiles = fetchedFiles }
+        }
+    }
+    
+    func handleSignInButton() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            GIDSignIn.sharedInstance.signIn(
+                withPresenting: rootViewController) { signInResult, error in
+                guard let result = signInResult else {
+                    // Inspect error
+                    return
+                }
+                // If sign in succeeded, display the app's main content View.
+            }
         }
     }
 }

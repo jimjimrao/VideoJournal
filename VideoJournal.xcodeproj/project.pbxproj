@@ -19,6 +19,8 @@
 		9CE5B7E32A306F370058334D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9CE5B7E22A306F370058334D /* Preview Assets.xcassets */; };
 		9CE5B80B2A3070380058334D /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE5B80A2A3070380058334D /* CameraViewModel.swift */; };
 		ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */ = {isa = PBXBuildFile; productRef = ED4CBBDE2B27E2D1007553CC /* Aespa */; };
+		ED6A335C2B6861BD00D2FB29 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */; };
+		ED6A335E2B6861BD00D2FB29 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +36,7 @@
 		9CE5B7E22A306F370058334D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9CE5B80A2A3070380058334D /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		9CE5B80E2A316BC00058334D /* VideoJournal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VideoJournal.entitlements; sourceTree = "<group>"; };
+		ED6A335F2B6863FB00D2FB29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +46,8 @@
 			files = (
 				0716FED42A3737D700B5AA1B /* Aespa in Frameworks */,
 				ED4CBBDF2B27E2D1007553CC /* Aespa in Frameworks */,
+				ED6A335C2B6861BD00D2FB29 /* GoogleSignIn in Frameworks */,
+				ED6A335E2B6861BD00D2FB29 /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +74,7 @@
 		9CE5B7DA2A306F350058334D /* VideoJournal */ = {
 			isa = PBXGroup;
 			children = (
+				ED6A335F2B6863FB00D2FB29 /* Info.plist */,
 				9CE5B80E2A316BC00058334D /* VideoJournal.entitlements */,
 				9CE5B7DB2A306F350058334D /* VideoJournalApp.swift */,
 				9CE5B7DD2A306F350058334D /* CameraView.swift */,
@@ -118,6 +124,8 @@
 			packageProductDependencies = (
 				0716FED32A3737D700B5AA1B /* Aespa */,
 				ED4CBBDE2B27E2D1007553CC /* Aespa */,
+				ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */,
+				ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */,
 			);
 			productName = "Aespa-iOS";
 			productReference = 9CE5B7D82A306F350058334D /* VideoJournal.app */;
@@ -149,6 +157,7 @@
 			mainGroup = 9CE5B7CF2A306F350058334D;
 			packageReferences = (
 				ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */,
+				ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 9CE5B7D92A306F350058334D /* Products */;
 			projectDirPath = "";
@@ -319,6 +328,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VideoJournal/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Use camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use mic";
@@ -357,6 +367,7 @@
 				DEVELOPMENT_TEAM = Q2GU7V8R52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VideoJournal/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "";
 				INFOPLIST_KEY_NSCameraUsageDescription = "Use camera";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use mic";
@@ -414,6 +425,14 @@
 				minimumVersion = 0.5.0;
 			};
 		};
+		ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -425,6 +444,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = ED4CBBDD2B27E2D1007553CC /* XCRemoteSwiftPackageReference "Aespa" */;
 			productName = Aespa;
+		};
+		ED6A335B2B6861BD00D2FB29 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		ED6A335D2B6861BD00D2FB29 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = ED6A335A2B6861BD00D2FB29 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
