@@ -217,8 +217,12 @@ class CameraViewModel: ObservableObject {
         
         // Set the Content-Type header to multipart/related and include the boundary
         request.setValue("multipart/related; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        // Set the Authorization header
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        // Define the metadata for the file
+        if let accessToken = self.userOAuth2Token?.tokenString {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        } else {
+            print("No OAuth token available")
+        }
         
         // Set the request body
         request.httpBody = requestData
