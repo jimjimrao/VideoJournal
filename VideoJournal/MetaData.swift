@@ -41,9 +41,10 @@ struct MetaData: View {
                         .disableAutocorrection(true)
                     }
                     
-                    Spacer()
-                    
-                    NavigationLink(destination: CameraView().navigationBarBackButtonHidden(true)) {
+                    // Upload to Google Drive button
+                    Button(action: {
+                        viewModel.uploadImageToGoogleDrive(fileName: title, mimeType: "image/jpeg")
+                    }) {
                         Text("Upload to Google Drive")
                             .padding()
                             .foregroundColor(.white)

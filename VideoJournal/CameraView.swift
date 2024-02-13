@@ -165,6 +165,7 @@ struct CameraView: View {
                         case .success(let photo):
                             DispatchQueue.main.async {
                                 viewModel.capturedPhoto = photo // Assign the captured photo to the variable
+                                viewModel.photoData = photo.image
                             }
                             // Handle the captured photo or perform further actions
                         case .failure(let error):
