@@ -34,6 +34,16 @@ struct SettingView: View {
         List {
             Section(header: Text("Common")) {
                 GoogleSignInButton(action: viewModel.handleSignInButton)
+                
+                // New button to call checkAndRequestScope
+                Button("Check and Request Scope") {
+                    if let currentUser = viewModel.currentUser,
+                       let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let rootViewController = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+                        viewModel.checkAndRequestScope(user: currentUser, presentingViewController: rootViewController)
+                    }
+                }
+                
                 Picker("Quality", selection: $quality) {
                     Text("Low").tag(AVCaptureSession.Preset.low)
                     Text("Medium").tag(AVCaptureSession.Preset.medium)

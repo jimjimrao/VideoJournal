@@ -165,6 +165,7 @@ struct CameraView: View {
                         case .success(let photo):
                             DispatchQueue.main.async {
                                 viewModel.capturedPhoto = photo // Assign the captured photo to the variable
+                                viewModel.photoData = photo.image
                             }
                             // Handle the captured photo or perform further actions
                         case .failure(let error):
@@ -205,7 +206,7 @@ struct CameraView: View {
             // Continue Button
             if !isRecording && viewModel.isTaken {
                 let coverImage = ( captureMode == .video ? viewModel.videoAlbumCover : viewModel.photoAlbumCover) ?? Image("")
-                NavigationLink(destination: MetaData(capturedPhoto: coverImage)) {
+                NavigationLink(destination: MetaData(viewModel: viewModel, capturedPhoto: coverImage)) {
                     Text("Continue")
                         .padding()
                         .foregroundColor(.white)
