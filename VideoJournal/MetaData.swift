@@ -9,6 +9,7 @@ import SwiftUI
 import Aespa
 
 struct MetaData: View {
+    @ObservedObject var viewModel = CameraViewModel()
     var capturedPhoto: Image?
     @State private var title: String = ""
     
@@ -41,9 +42,10 @@ struct MetaData: View {
                         .disableAutocorrection(true)
                     }
                     
-                    Spacer()
-                    
-                    NavigationLink(destination: CameraView().navigationBarBackButtonHidden(true)) {
+                    // Upload to Google Drive button
+                    Button(action: {
+                        viewModel.uploadImageToGoogleDrive(fileName: title, mimeType: "image/jpeg")
+                    }) {
                         Text("Upload to Google Drive")
                             .padding()
                             .foregroundColor(.white)

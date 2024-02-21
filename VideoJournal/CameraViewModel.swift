@@ -8,6 +8,7 @@
 import Combine
 import SwiftUI
 import Foundation
+import UIKit
 
 import Aespa
 import GoogleSignIn
@@ -35,6 +36,7 @@ class CameraViewModel: ObservableObject {
     @Published var photoAlbumCover: Image?
     
     @Published var capturedPhoto: PhotoFile?
+    @Published var photoData: UIImage
 
     
     @Published var videoFiles: [VideoAsset] = []
@@ -42,6 +44,7 @@ class CameraViewModel: ObservableObject {
     
     init() {
         let option = AespaOption(albumName: "YOUR_ALBUM_NAME")
+        self.photoData = UIImage(named: "cat")!
         self.aespaSession = Aespa.session(with: option)
 
         // Common setting
@@ -135,6 +138,13 @@ class CameraViewModel: ObservableObject {
                     self.userOAuth2Token = self.currentUser?.accessToken
                     print("ouath2 Access Token: \(self.userOAuth2Token?.tokenString ?? "no oauth2 token")")
                     
+                    // Log granted scopes
+                    if let grantedScopes = signInResult.user.grantedScopes {
+                        print("Granted Scopes: \(grantedScopes.joined(separator: ", "))")
+                    } else {
+                        print("No scopes were granted.")
+                    }
+                    
                     
                     if let name = signInResult.user.profile?.name {
                         self.userName = name
@@ -165,6 +175,91 @@ class CameraViewModel: ObservableObject {
             print("Drive scope has been granted after requesting.")
         }
     }
+    
+    func uploadImageToGoogleDrive(fileName: String, mimeType: String) {
+        // Safely unwrap imageData and handle the case where it is nil
+        guard let imageData = self.photoData.jpegData(compressionQuality: 1.0) else {
+            fatalError("Unable to retrieve photo")
+        }
+        
+        // Define the metadata for the file
+        let accessToken = self.userOAuth2Token?.tokenString
+        
+        // Print the OAuth2 token
+        print("OAuth2 Token: \(accessToken ?? "No token available")")
+        
+        let metadata = [
+            "name": fileName,
+            "mimeType": mimeType
+        ]
+        
+        // Generate a unique boundary string using a UUID
+        let boundary = "Boundary-\(UUID().uuidString)"
+        
+        // Create the multipart request body
+        var requestData = Data()
+        
+        // Add the metadata part
+        if let metadataData = try? JSONSerialization.data(withJSONObject: metadata, options: []) {
+            let metadataPart = "--\(boundary)\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n"
+            requestData.append(Data(metadataPart.utf8))
+            requestData.append(metadataData)
+            requestData.append("\r\n".data(using: .utf8)!)
+        }
+        
+        // Add the image content part
+        let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
+        requestData.append(Data(filePartHeader.utf8))
+        requestData.append(imageData) // imageData is now in scope for the entire function
+        requestData.append("\r\n".data(using: .utf8)!)
+        
+        // End the request body with the boundary
+        let closingBoundary = "--\(boundary)--"
+        requestData.append(Data(closingBoundary.utf8))
+        
+        // Prepare the URL and request
+        let url = URL(string: "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        
+        // Set the Content-Type header to multipart/related and include the boundary
+        request.setValue("multipart/related; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        // Define the metadata for the file
+        if let accessToken = self.userOAuth2Token?.tokenString {
+            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        } else {
+            print("No OAuth token available")
+        }
+        
+        // Set the request body
+        request.httpBody = requestData
+        
+        // Debugging: Print the entire request
+        print("HTTP Method: \(request.httpMethod ?? "No HTTP method")")
+        print("URL: \(request.url?.absoluteString ?? "No URL")")
+        print("Headers: \(request.allHTTPHeaderFields ?? [:])")
+        if let body = request.httpBody, let bodyString = String(data: body, encoding: .utf8) {
+            print("Body: \(bodyString)")
+        } else {
+            print("Body: Unable to print body data")
+        }
+        
+        // Perform the request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error: \(error)")
+                return
+            }
+            
+            // Handle the response
+            if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                print("Response: \(responseString)")
+            }
+        }
+        
+        task.resume()
+    }
+    
 }
 
 
