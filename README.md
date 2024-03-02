@@ -12,7 +12,16 @@ Capture your favorite moments by taking pictures or recording videos directly wi
 
 ### 3. Seamless Cloud Storage
 Upload your captured media effortlessly to Google Drive, ensuring your memories are securely stored in the cloud.
+## Requirements
 
+- **iOS:** 16.0 +
+- **Swift:** 5
+
+## Libraries Used
+
+- **[Aespa](https://github.com/enebin/Aespa)**: a robust and intuitive Swift package for video and photo capturing
+- **[GoogleSignIn](https://developers.google.com/identity/sign-in/ios/start)**: a library for easy integration of Google sign-in functionality into the app.
+  
 ## Deployment
 
 To deploy the VideoJournal app on your iPhone, follow these simple steps:
