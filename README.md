@@ -51,6 +51,11 @@ For detailed deployment instructions, please refer to the [Apple Official Docume
 
 4. Upload your media to Google Drive for secure cloud storage.
 
+<div style="display: flex; justify-content: center;">
+    <img src="https://github.com/jimjimrao/VideoJournal/assets/32654532/3edd34bc-fcb8-4cfc-9aab-12ba00689887" alt="IMG_1466" width="300"/>
+    <img src="https://github.com/jimjimrao/VideoJournal/assets/32654532/83ef7b31-35b4-40c2-9b39-0759ab72bb92" alt="IMG_1467" width="300"/>
+</div>
+
 ## Contributing
 
 We welcome contributions to make VideoJournal even better. Feel free to fork the repository, make your changes, and submit a pull request.
