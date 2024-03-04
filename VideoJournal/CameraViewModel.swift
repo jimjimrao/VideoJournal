@@ -35,6 +35,8 @@ class CameraViewModel: ObservableObject {
     @Published var videoAlbumCover: Image?
     @Published var photoAlbumCover: Image?
     
+    @Published var uploadType: AssetType = .photo
+    @Published var capturedVideoData: Data?
     @Published var capturedPhoto: PhotoFile?
     @Published var photoData: UIImage
 
@@ -74,6 +76,10 @@ class CameraViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .map { result -> Image? in
                 if case .success(let file) = result {
+                    if let filePath = file.path {
+                        self.uploadType = .video
+                        self.setCapturedVideoData(from: filePath)
+                    }
                     return file.thumbnailImage
                 } else {
                     return nil
@@ -87,6 +93,7 @@ class CameraViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .map { result -> Image? in
                 if case .success(let file) = result {
+                    self.uploadType = .photo
                     return file.thumbnailImage
                 } else {
                     return nil
@@ -96,6 +103,15 @@ class CameraViewModel: ObservableObject {
             .store(in: &subscription)
     }
     
+    func setCapturedVideoData(from fileURL: URL) {
+        do {
+            self.capturedVideoData = try Data(contentsOf: fileURL)
+            print("CapturedVideoData:", self.capturedVideoData!)
+        } catch {
+            print("Error converting video to Data: \(error)")
+        }
+    }
+
     func fetchVideoFiles() {
         // File fetching task can cause low reponsiveness when called from main thread
         Task(priority: .utility) {
@@ -176,10 +192,12 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func uploadImageToGoogleDrive(fileName: String, mimeType: String) {
-        // Safely unwrap imageData and handle the case where it is nil
-        guard let imageData = self.photoData.jpegData(compressionQuality: 1.0) else {
-            fatalError("Unable to retrieve photo")
+    func uploadImageToGoogleDrive(fileName: String) {
+        
+        // Function to add file part header to requestData
+        func addFilePartHeader(to requestData: inout Data, with boundary: String, mimeType: String) {
+            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
+            requestData.append(Data(filePartHeader.utf8))
         }
         
         // Define the metadata for the file
@@ -187,6 +205,14 @@ class CameraViewModel: ObservableObject {
         
         // Print the OAuth2 token
         print("OAuth2 Token: \(accessToken ?? "No token available")")
+        
+        var mimeType: String = ""
+        switch self.uploadType {
+        case .photo:
+            mimeType = "image/jpeg"
+        case .video:
+            mimeType = "video/mp4"
+        }
         
         let metadata = [
             "name": fileName,
@@ -207,11 +233,21 @@ class CameraViewModel: ObservableObject {
             requestData.append("\r\n".data(using: .utf8)!)
         }
         
-        // Add the image content part
-        let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
-        requestData.append(Data(filePartHeader.utf8))
-        requestData.append(imageData) // imageData is now in scope for the entire function
-        requestData.append("\r\n".data(using: .utf8)!)
+        // Check upload type and add the corresponding data part
+        switch self.uploadType {
+        case .photo:
+            if let imageData = self.photoData.jpegData(compressionQuality: 1.0) {
+                addFilePartHeader(to: &requestData, with: boundary, mimeType: mimeType)
+                requestData.append(imageData)
+                requestData.append("\r\n".data(using: .utf8)!)
+            }
+        case .video:
+            if let videoData = self.capturedVideoData {
+                addFilePartHeader(to: &requestData, with: boundary, mimeType: mimeType)
+                requestData.append(videoData)
+                requestData.append("\r\n".data(using: .utf8)!)
+            }
+        }
         
         // End the request body with the boundary
         let closingBoundary = "--\(boundary)--"

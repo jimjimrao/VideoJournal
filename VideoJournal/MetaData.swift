@@ -44,7 +44,7 @@ struct MetaData: View {
                     
                     // Upload to Google Drive button
                     Button(action: {
-                        viewModel.uploadImageToGoogleDrive(fileName: title, mimeType: "image/jpeg")
+                        viewModel.uploadImageToGoogleDrive(fileName: title)
                     }) {
                         Text("Upload to Google Drive")
                             .padding()
