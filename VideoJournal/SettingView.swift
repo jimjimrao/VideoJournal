@@ -33,7 +33,17 @@ struct SettingView: View {
     var body: some View {
         List {
             Section(header: Text("Common")) {
-                GoogleSignInButton(action: viewModel.handleSignInButton)
+                if viewModel.currentUser?.profile == nil {
+                    GoogleSignInButton(action: viewModel.handleSignInButton)
+                } else {
+                    let userProfile = viewModel.currentUser?.profile
+                    VStack(alignment: .leading) {
+                        Text(viewModel.currentUser?.profile?.name ?? "No name")
+                            .font(.headline)
+                        Text(viewModel.currentUser?.profile?.email ?? "No email")
+                            .font(.subheadline)
+                    }
+                }
                 
                 // New button to call checkAndRequestScope
                 Button("Check and Request Scope") {
