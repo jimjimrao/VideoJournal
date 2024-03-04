@@ -79,8 +79,6 @@ class CameraViewModel: ObservableObject {
                     if let filePath = file.path {
                         self.uploadType = .video
                         self.setCapturedVideoData(from: filePath)
-                        print("File path of video: \(filePath)")
-                        print("uploadType: \(self.uploadType)")
                     }
                     return file.thumbnailImage
                 } else {
@@ -96,7 +94,6 @@ class CameraViewModel: ObservableObject {
             .map { result -> Image? in
                 if case .success(let file) = result {
                     self.uploadType = .photo
-                    print("uploadType: \(self.uploadType)")
                     return file.thumbnailImage
                 } else {
                     return nil
@@ -196,7 +193,13 @@ class CameraViewModel: ObservableObject {
     }
     
     func uploadImageToGoogleDrive(fileName: String) {
-
+        
+        // Function to add file part header to requestData
+        func addFilePartHeader(to requestData: inout Data, with boundary: String, mimeType: String) {
+            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
+            requestData.append(Data(filePartHeader.utf8))
+        }
+        
         // Define the metadata for the file
         let accessToken = self.userOAuth2Token?.tokenString
         
@@ -204,10 +207,10 @@ class CameraViewModel: ObservableObject {
         print("OAuth2 Token: \(accessToken ?? "No token available")")
         
         var mimeType: String = ""
-        
-        if self.uploadType == .photo {
+        switch self.uploadType {
+        case .photo:
             mimeType = "image/jpeg"
-        } else if self.uploadType == .video {
+        case .video:
             mimeType = "video/mp4"
         }
         
@@ -231,16 +234,19 @@ class CameraViewModel: ObservableObject {
         }
         
         // Check upload type and add the corresponding data part
-        if self.uploadType == .photo, let imageData = self.photoData.jpegData(compressionQuality: 1.0) {
-            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
-            requestData.append(Data(filePartHeader.utf8))
-            requestData.append(imageData)
-            requestData.append("\r\n".data(using: .utf8)!)
-        } else if self.uploadType == .video, let videoData = self.capturedVideoData {
-            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
-            requestData.append(Data(filePartHeader.utf8))
-            requestData.append(videoData)
-            requestData.append("\r\n".data(using: .utf8)!)
+        switch self.uploadType {
+        case .photo:
+            if let imageData = self.photoData.jpegData(compressionQuality: 1.0) {
+                addFilePartHeader(to: &requestData, with: boundary, mimeType: mimeType)
+                requestData.append(imageData)
+                requestData.append("\r\n".data(using: .utf8)!)
+            }
+        case .video:
+            if let videoData = self.capturedVideoData {
+                addFilePartHeader(to: &requestData, with: boundary, mimeType: mimeType)
+                requestData.append(videoData)
+                requestData.append("\r\n".data(using: .utf8)!)
+            }
         }
         
         // End the request body with the boundary
