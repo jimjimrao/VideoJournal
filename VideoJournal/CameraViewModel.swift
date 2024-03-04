@@ -195,17 +195,21 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func uploadImageToGoogleDrive(fileName: String, mimeType: String) {
-        // Safely unwrap imageData and handle the case where it is nil
-        guard let imageData = self.photoData.jpegData(compressionQuality: 1.0) else {
-            fatalError("Unable to retrieve photo")
-        }
-        
+    func uploadImageToGoogleDrive(fileName: String) {
+
         // Define the metadata for the file
         let accessToken = self.userOAuth2Token?.tokenString
         
         // Print the OAuth2 token
         print("OAuth2 Token: \(accessToken ?? "No token available")")
+        
+        var mimeType: String = ""
+        
+        if self.uploadType == .photo {
+            mimeType = "image/jpeg"
+        } else if self.uploadType == .video {
+            mimeType = "video/mp4"
+        }
         
         let metadata = [
             "name": fileName,
@@ -226,11 +230,18 @@ class CameraViewModel: ObservableObject {
             requestData.append("\r\n".data(using: .utf8)!)
         }
         
-        // Add the image content part
-        let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
-        requestData.append(Data(filePartHeader.utf8))
-        requestData.append(imageData) // imageData is now in scope for the entire function
-        requestData.append("\r\n".data(using: .utf8)!)
+        // Check upload type and add the corresponding data part
+        if self.uploadType == .photo, let imageData = self.photoData.jpegData(compressionQuality: 1.0) {
+            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
+            requestData.append(Data(filePartHeader.utf8))
+            requestData.append(imageData)
+            requestData.append("\r\n".data(using: .utf8)!)
+        } else if self.uploadType == .video, let videoData = self.capturedVideoData {
+            let filePartHeader = "--\(boundary)\r\nContent-Type: \(mimeType)\r\n\r\n"
+            requestData.append(Data(filePartHeader.utf8))
+            requestData.append(videoData)
+            requestData.append("\r\n".data(using: .utf8)!)
+        }
         
         // End the request body with the boundary
         let closingBoundary = "--\(boundary)--"
