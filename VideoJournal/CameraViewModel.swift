@@ -36,6 +36,7 @@ class CameraViewModel: ObservableObject {
     @Published var photoAlbumCover: Image?
     
     @Published var uploadType: AssetType = .photo
+    @Published var capturedVideoData: Data?
     @Published var capturedPhoto: PhotoFile?
     @Published var photoData: UIImage
 
@@ -77,6 +78,7 @@ class CameraViewModel: ObservableObject {
                 if case .success(let file) = result {
                     if let filePath = file.path {
                         self.uploadType = .video
+                        self.setCapturedVideoData(from: filePath)
                         print("File path of video: \(filePath)")
                         print("uploadType: \(self.uploadType)")
                     }
@@ -104,6 +106,15 @@ class CameraViewModel: ObservableObject {
             .store(in: &subscription)
     }
     
+    func setCapturedVideoData(from fileURL: URL) {
+        do {
+            self.capturedVideoData = try Data(contentsOf: fileURL)
+            print("CapturedVideoData:", self.capturedVideoData!)
+        } catch {
+            print("Error converting video to Data: \(error)")
+        }
+    }
+
     func fetchVideoFiles() {
         // File fetching task can cause low reponsiveness when called from main thread
         Task(priority: .utility) {
