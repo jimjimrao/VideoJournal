@@ -38,9 +38,9 @@ struct SettingView: View {
                 } else {
                     let userProfile = viewModel.currentUser?.profile
                     VStack(alignment: .leading) {
-                        Text(viewModel.currentUser?.profile?.name ?? "No name")
+                        Text(userProfile!.name)
                             .font(.headline)
-                        Text(viewModel.currentUser?.profile?.email ?? "No email")
+                        Text(userProfile!.email)
                             .font(.subheadline)
                     }
                 }
