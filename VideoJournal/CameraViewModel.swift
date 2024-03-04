@@ -35,6 +35,7 @@ class CameraViewModel: ObservableObject {
     @Published var videoAlbumCover: Image?
     @Published var photoAlbumCover: Image?
     
+    @Published var uploadType: AssetType = .photo
     @Published var capturedPhoto: PhotoFile?
     @Published var photoData: UIImage
 
@@ -74,6 +75,11 @@ class CameraViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .map { result -> Image? in
                 if case .success(let file) = result {
+                    if let filePath = file.path {
+                        self.uploadType = .video
+                        print("File path of video: \(filePath)")
+                        print("uploadType: \(self.uploadType)")
+                    }
                     return file.thumbnailImage
                 } else {
                     return nil
@@ -87,6 +93,8 @@ class CameraViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .map { result -> Image? in
                 if case .success(let file) = result {
+                    self.uploadType = .photo
+                    print("uploadType: \(self.uploadType)")
                     return file.thumbnailImage
                 } else {
                     return nil
