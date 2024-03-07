@@ -1,10 +1,3 @@
-//
-//  VideoContentView.swift
-//  Aespa-iOS
-//
-//  Created by 이영빈 on 2023/06/07.
-//
-
 import Aespa
 import SwiftUI
 
@@ -205,7 +198,7 @@ struct CameraView: View {
             // Continue Button
             if !isRecording && viewModel.isTaken {
                 let coverImage = ( captureMode == .video ? viewModel.videoAlbumCover : viewModel.photoAlbumCover) ?? Image("")
-                NavigationLink(destination: MetaData(capturedPhoto: coverImage)) {
+                NavigationLink(destination: MetadataView(capturedPhoto: coverImage)) {
                     Text("Continue")
                         .padding()
                         .foregroundColor(.white)

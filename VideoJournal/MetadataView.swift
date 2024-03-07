@@ -1,6 +1,5 @@
 //
-//  MetaData.swift
-//  MVP
+//  MetadataView.swift
 //
 //  Created by Joe Chuen Yu on 11/23/23.
 //
@@ -8,7 +7,7 @@
 import SwiftUI
 import Aespa
 
-struct MetaData: View {
+struct MetadataView: View {
     var capturedPhoto: Image?
     @State private var title: String = ""
     
@@ -59,5 +58,5 @@ struct MetaData: View {
 }
 
 #Preview {
-    MetaData()
+    MetadataView()
 }

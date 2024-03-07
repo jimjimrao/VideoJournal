@@ -1,10 +1,3 @@
-//
-//  VideoContentViewModel.swift
-//  Aespa-iOS
-//
-//  Created by 이영빈 on 2023/06/07.
-//
-
 import Combine
 import SwiftUI
 import Foundation
@@ -19,8 +12,8 @@ class CameraViewModel: ObservableObject {
         aespaSession.interactivePreview()
         
         // Or you can give some options
-//        let option = InteractivePreviewOption(enableZoom: true)
-//        return aespaSession.interactivePreview(option: option)
+        //        let option = InteractivePreviewOption(enableZoom: true)
+        //        return aespaSession.interactivePreview(option: option)
     }
     
     @Published var userName: String? = nil
@@ -35,7 +28,7 @@ class CameraViewModel: ObservableObject {
     @Published var photoAlbumCover: Image?
     
     @Published var capturedPhoto: PhotoFile?
-
+    
     
     @Published var videoFiles: [VideoAsset] = []
     @Published var photoFiles: [PhotoAsset] = []
@@ -43,7 +36,7 @@ class CameraViewModel: ObservableObject {
     init() {
         let option = AespaOption(albumName: "YOUR_ALBUM_NAME")
         self.aespaSession = Aespa.session(with: option)
-
+        
         // Common setting
         aespaSession
             .common(.focus(mode: .continuousAutoFocus))
@@ -60,12 +53,12 @@ class CameraViewModel: ObservableObject {
         aespaSession
             .photo(.flashMode(mode: .off))
             .photo(.redEyeReduction(enabled: true))
-
+        
         // Video-only setting
         aespaSession
             .video(.mute)
             .video(.stabilization(mode: .auto))
-
+        
         // Prepare video album cover
         aespaSession.videoFilePublisher
             .receive(on: DispatchQueue.main)
@@ -146,9 +139,9 @@ class CameraViewModel: ObservableObject {
             // If sign in succeeded, display the app's main content View.
         }
     }
-
     
-
+    
+    
     func checkAndRequestScope(user: GIDGoogleUser, presentingViewController: UIViewController) {
         let driveScope = "https://www.googleapis.com/auth/drive.readonly"
         

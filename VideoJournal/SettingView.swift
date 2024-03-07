@@ -1,17 +1,10 @@
-//
-//  SettingView.swift
-//  Aespa-iOS
-//
-//  Created by Young Bin on 2023/06/08.
-//
-
 import SwiftUI
 import AVFoundation
 import GoogleSignInSwift
 
 struct SettingView: View {
     @ObservedObject var viewModel: CameraViewModel
-
+    
     @State private var quality: AVCaptureSession.Preset
     @State private var focusMode: AVCaptureDevice.FocusMode
     
