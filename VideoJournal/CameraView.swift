@@ -199,7 +199,7 @@ struct CameraView: View {
             // Continue Button
             if !isRecording && viewModel.isTaken {
                 let coverImage = ( captureMode == .video ? viewModel.videoAlbumCover : viewModel.photoAlbumCover) ?? Image("")
-                NavigationLink(destination: MetadataView(viewModel: viewModel, capturedPhoto: coverImage)) {
+                NavigationLink(destination: MetadataView(viewModel: viewModel, mediaPreview: coverImage)) {
                     Text("Continue")
                         .padding()
                         .foregroundColor(.white)
