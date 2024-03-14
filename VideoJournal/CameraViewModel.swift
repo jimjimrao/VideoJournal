@@ -32,6 +32,7 @@ class CameraViewModel: ObservableObject {
     @Published var capturedVideoData: Data?
     @Published var capturedPhoto: PhotoFile?
     @Published var photoData: UIImage
+    @Published var filePath: URL?
     
     
     @Published var videoFiles: [VideoAsset] = []
@@ -70,6 +71,7 @@ class CameraViewModel: ObservableObject {
             .map { result -> Image? in
                 if case .success(let file) = result {
                     if let filePath = file.path {
+                        self.filePath = filePath
                         self.uploadType = .video
                         self.setCapturedVideoData(from: filePath)
                     }
