@@ -10,7 +10,7 @@ import AVKit
 
 struct MetadataView: View {
     @ObservedObject var viewModel = CameraViewModel()
-    var capturedPhoto: Image?
+    var mediaPreview: Image?
     @State private var title: String = ""
     @State private var player = AVPlayer()
     @State private var isPlayerPresented = false
@@ -20,7 +20,7 @@ struct MetadataView: View {
             GeometryReader { geometry in
                 VStack {
                     Group {
-                        if capturedPhoto != Image("") {
+                        if mediaPreview != Image("") {
                             Button(action: {
                                 if viewModel.uploadType == .video {
                                     if self.player.currentItem?.asset != AVAsset(url: viewModel.filePath!) {
@@ -29,7 +29,7 @@ struct MetadataView: View {
                                     isPlayerPresented.toggle()
                                 }
                             }) {
-                                capturedPhoto?
+                                mediaPreview?
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                             }
