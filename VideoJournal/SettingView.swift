@@ -1,6 +1,7 @@
 import SwiftUI
 import AVFoundation
 import GoogleSignInSwift
+import GoogleSignIn
 
 struct SettingView: View {
     @ObservedObject var viewModel: CameraViewModel
@@ -25,19 +26,33 @@ struct SettingView: View {
     
     var body: some View {
         List {
-            Section(header: Text("Common")) {
-                if viewModel.currentUser?.profile == nil {
-                    GoogleSignInButton(action: viewModel.handleSignInButton)
+            Section(header: Text("Account")) {
+                if !viewModel.isSignedIn {
+                    GoogleSignInButton(action: {
+                        viewModel.handleSignInButton()
+                    })
                 } else {
                     let userProfile = viewModel.currentUser?.profile
-                    VStack(alignment: .leading) {
-                        Text(userProfile!.name)
-                            .font(.headline)
-                        Text(userProfile!.email)
-                            .font(.subheadline)
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(userProfile?.name ?? "No name")
+                                .font(.headline)
+                            Text(userProfile?.email ?? "No email")
+                                .font(.subheadline)
+                        }
+                        Spacer()
+                        Button(action: {
+                            GIDSignIn.sharedInstance.signOut()
+                            viewModel.isSignedIn = false
+                        }) {
+                            Text("Sign Out")
+                        }
                     }
                 }
-                
+            }
+            
+            
+            Section(header: Text("Common")) {
                 // New button to call checkAndRequestScope
                 Button("Check and Request Scope") {
                     if let currentUser = viewModel.currentUser,
