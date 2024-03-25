@@ -187,7 +187,7 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func uploadImageToGoogleDrive(fileName: String) {
+    func uploadImageToGoogleDrive(fileName: String, folderID: String? = nil) {
         
         // Function to add file part header to requestData
         func addFilePartHeader(to requestData: inout Data, with boundary: String, mimeType: String) {
@@ -211,8 +211,9 @@ class CameraViewModel: ObservableObject {
         
         let metadata = [
             "name": fileName,
-            "mimeType": mimeType
-        ]
+            "mimeType": mimeType,
+            "parents": [folderID] // https://drive.google.com/drive/folders/[folderID]
+        ] as [String : Any]
         
         // Generate a unique boundary string using a UUID
         let boundary = "Boundary-\(UUID().uuidString)"
