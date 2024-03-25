@@ -6,21 +6,33 @@
 
 import SwiftUI
 import Aespa
+import AVKit
 
 struct MetadataView: View {
     @ObservedObject var viewModel = CameraViewModel()
-    var capturedPhoto: Image?
+    var mediaPreview: Image?
     @State private var title: String = ""
+    @State private var player = AVPlayer()
+    @State private var isPlayerPresented = false
     
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 VStack {
                     Group {
-                        if capturedPhoto != Image("") {
-                            capturedPhoto?
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
+                        if mediaPreview != Image("") {
+                            Button(action: {
+                                if viewModel.uploadType == .video {
+                                    if self.player.currentItem?.asset != AVAsset(url: viewModel.filePath!) {
+                                        self.player.replaceCurrentItem(with: AVPlayerItem(url: viewModel.filePath!))
+                                    }
+                                    isPlayerPresented.toggle()
+                                }
+                            }) {
+                                mediaPreview?
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                            }
                         } else {
                             Text("No photo captured")
                                 .foregroundColor(.gray)
@@ -55,10 +67,19 @@ struct MetadataView: View {
                     Spacer()
                 }
             }
+            .sheet(isPresented: $isPlayerPresented) {
+                VideoPlayer(player: player)
+                    .onDisappear {
+                        self.player.pause()
+                        self.player.replaceCurrentItem(with: nil)
+                    }
+            }
         }
     }
 }
 
-#Preview {
-    MetadataView()
+struct MetadataView_Previews: PreviewProvider {
+    static var previews: some View {
+        MetadataView()
+    }
 }
