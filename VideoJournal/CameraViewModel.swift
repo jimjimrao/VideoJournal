@@ -210,7 +210,7 @@ class CameraViewModel: ObservableObject {
         let metadata = [
             "name": fileName,
             "mimeType": mimeType,
-            "parents": [folderID]
+            "parents": [folderID] // https://drive.google.com/drive/folders/[folderID]
         ] as [String : Any]
         
         // Generate a unique boundary string using a UUID
