@@ -14,6 +14,7 @@ struct MetadataView: View {
     @State private var title: String = ""
     @State private var player = AVPlayer()
     @State private var isPlayerPresented = false
+    @State private var isUploadSuccessful = false
     
     var body: some View {
         NavigationView {
@@ -55,14 +56,25 @@ struct MetadataView: View {
                     
                     // Upload to Google Drive button
                     Button(action: {
-                        viewModel.uploadImageToGoogleDrive(fileName: title)
+                        if !isUploadSuccessful {
+                            viewModel.uploadImageToGoogleDrive(fileName: title) { success, error in
+                                if success {
+                                    isUploadSuccessful = true
+                                } else {
+                                    // Handle upload failure and show error pop-up
+                                    // Implement error handling logic here
+                                }
+                            }
+                        }
                     }) {
-                        Text("Upload to Google Drive")
+                        Text(isUploadSuccessful ? "Upload Successful" : "Upload to Google Drive")
                             .padding()
                             .foregroundColor(.white)
-                            .background(Color.blue)
+                            .background(isUploadSuccessful ? Color.green : Color.blue)
                             .cornerRadius(10)
                     }
+                    .disabled(isUploadSuccessful)
+
                     
                     Spacer()
                 }

@@ -187,7 +187,7 @@ class CameraViewModel: ObservableObject {
         }
     }
     
-    func uploadImageToGoogleDrive(fileName: String, folderID: String? = nil) {
+    func uploadImageToGoogleDrive(fileName: String, folderID: String? = nil, completion: @escaping (Bool, Error?) -> Void) {
         
         // Function to add file part header to requestData
         func addFilePartHeader(to requestData: inout Data, with boundary: String, mimeType: String) {
@@ -276,16 +276,23 @@ class CameraViewModel: ObservableObject {
             print("Body: Unable to print body data")
         }
         
-        // Perform the request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error: \(error)")
+                completion(false, error)
                 return
             }
             
-            // Handle the response
-            if let data = data, let responseString = String(data: data, encoding: .utf8) {
-                print("Response: \(responseString)")
+            // Handle the response and check for successful upload
+            if let data = data {
+                if let responseString = String(data: data, encoding: .utf8) {
+                    print("Response: \(responseString)")
+                    completion(true, nil)
+                } else {
+                    completion(false, nil)
+                }
+            } else {
+                completion(false, nil)
             }
         }
         
