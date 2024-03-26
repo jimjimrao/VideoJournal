@@ -22,6 +22,7 @@ class CameraViewModel: ObservableObject {
     @Published var userOAuth2Token: GIDToken?
     
     @Published var isTaken = false
+    @Published var isSignedIn: Bool = false
     
     private var subscription = Set<AnyCancellable>()
     
@@ -137,6 +138,8 @@ class CameraViewModel: ObservableObject {
                     // Save the signed-in user to the currentUser property
                     self.currentUser = signInResult.user
                     
+                    isSignedIn = true
+                    
                     // Print data
                     print("User profile:", self.currentUser!)
                     print("User ID: \(self.currentUser!.userID!)")
@@ -165,6 +168,7 @@ class CameraViewModel: ObservableObject {
                     }
                 }
             // If sign in succeeded, display the app's main content View.
+            
         }
     }
     
