@@ -287,8 +287,15 @@ class CameraViewModel: ObservableObject {
             if let data = data {
                 if let responseString = String(data: data, encoding: .utf8) {
                     print("Response: \(responseString)")
-                    completion(true, nil)
+                    
+                    if responseString.contains("\"error\"") {
+                        print("Error Found")
+                        completion(false, nil)
+                    } else {
+                        completion(true, nil) // Valid response
+                    }
                 } else {
+                    print("Unable to decode response data.")
                     completion(false, nil)
                 }
             } else {
