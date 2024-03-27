@@ -63,7 +63,7 @@ class CameraViewModel: ObservableObject {
         
         // Video-only setting
         aespaSession
-            .video(.mute)
+            .video(.unmute)
             .video(.stabilization(mode: .auto))
         
         // Prepare video album cover
