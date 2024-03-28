@@ -70,7 +70,11 @@ struct MetadataView: View {
                             if isUploadSuccessful == false {
                                 Image(systemName: "arrow.clockwise.circle.fill") // Retry icon
                                     .foregroundColor(.white)
-                                Text("Retry Upload")
+                                if viewModel.currentUser != nil {
+                                    Text("Upload Failed")
+                                } else {
+                                    Text("User Not Signed In")
+                                }
                             } else {
                                 Text(isUploadSuccessful == true ? "Upload Successful" : "Upload to Google Drive")
                             }
