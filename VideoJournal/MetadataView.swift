@@ -58,11 +58,7 @@ struct MetadataView: View {
                     Button(action: {
                         if isUploadSuccessful == nil || isUploadSuccessful == false {
                             viewModel.uploadImageToGoogleDrive(fileName: title) { success, error in
-                                if success {
-                                    isUploadSuccessful = true
-                                } else {
-                                    isUploadSuccessful = false
-                                }
+                                isUploadSuccessful = success
                             }
                         }
                     }) {
