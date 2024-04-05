@@ -14,6 +14,7 @@ struct MetadataView: View {
     @State private var title: String = ""
     @State private var player = AVPlayer()
     @State private var isPlayerPresented = false
+    @State private var isUploadSuccessful: Bool? = nil
     
     var body: some View {
         NavigationView {
@@ -55,14 +56,31 @@ struct MetadataView: View {
                     
                     // Upload to Google Drive button
                     Button(action: {
-                        viewModel.uploadImageToGoogleDrive(fileName: title)
+                        if isUploadSuccessful == nil || isUploadSuccessful == false {
+                            viewModel.uploadImageToGoogleDrive(fileName: title) { success, error in
+                                isUploadSuccessful = success
+                            }
+                        }
                     }) {
-                        Text("Upload to Google Drive")
-                            .padding()
-                            .foregroundColor(.white)
-                            .background(Color.blue)
-                            .cornerRadius(10)
+                        HStack {
+                            if isUploadSuccessful == false {
+                                Image(systemName: "arrow.clockwise.circle.fill") // Retry icon
+                                    .foregroundColor(.white)
+                                if viewModel.currentUser != nil {
+                                    Text("Upload Failed")
+                                } else {
+                                    Text("User Not Signed In")
+                                }
+                            } else {
+                                Text(isUploadSuccessful == true ? "Upload Successful" : "Upload to Google Drive")
+                            }
+                        }
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(isUploadSuccessful == true ? Color.green : (isUploadSuccessful == false ? Color.red : Color.blue))
+                        .cornerRadius(10)
                     }
+                    .disabled(isUploadSuccessful != nil && isUploadSuccessful != false)
                     
                     Spacer()
                 }
