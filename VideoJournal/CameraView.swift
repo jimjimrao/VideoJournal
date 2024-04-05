@@ -24,17 +24,21 @@ struct CameraView: View {
                 } else {
                     switch captureMode {
                     case .video:
-                        let takenVideo = viewModel.videoAlbumCover
-                        
-                        takenVideo?
-                            .resizable()
-                            .scaledToFill()
+                        if let takenVideo = viewModel.videoAlbumCover {
+                            takenVideo
+                                .resizable()
+                                .scaledToFill()
+                        } else {
+                            Text("Loading...")
+                        }
                     case .photo:
-                        let takenPhoto = viewModel.capturedPhoto?.thumbnailImage
-                        
-                        takenPhoto?
-                            .resizable()
-                            .scaledToFill()
+                        if let takenPhoto = viewModel.capturedPhoto?.thumbnailImage {
+                            takenPhoto
+                                .resizable()
+                                .scaledToFill()
+                        } else {
+                            Text("Loading...")
+                        }
                     }
                     
                 }
@@ -97,7 +101,12 @@ struct CameraView: View {
     
     @ViewBuilder
     var retakeButton: some View {
-        Button(action: {viewModel.isTaken = false}, label: {
+        Button(action: {
+            viewModel.isTaken = false
+            viewModel.videoAlbumCover = nil
+            viewModel.capturedPhoto = nil
+            
+        }, label: {
             Image(systemName: "arrow.uturn.forward.circle")
                 .resizable()
                 .foregroundColor(.white)
