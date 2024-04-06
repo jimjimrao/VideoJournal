@@ -1,9 +1,40 @@
 import Aespa
 import SwiftUI
+import AVKit
 
 enum AssetType {
     case video
     case photo
+}
+struct VideoPlayerView: View {
+    let videoURL: URL
+
+    var body: some View {
+        PlayerContainerView(videoURL: videoURL)
+    }
+}
+
+struct PlayerContainerView: UIViewControllerRepresentable {
+    let videoURL: URL
+    
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let player = AVPlayer(url: videoURL)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        
+        // Add observer for when playback ends
+        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { _ in
+            player.seek(to: CMTime.zero)
+            player.play()
+        }
+        
+        // Start playing the video
+        player.play()
+        
+        return playerViewController
+    }
+
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
 
 struct CameraView: View {
@@ -24,10 +55,8 @@ struct CameraView: View {
                 } else {
                     switch captureMode {
                     case .video:
-                        if let takenVideo = viewModel.videoAlbumCover {
-                            takenVideo
-                                .resizable()
-                                .scaledToFill()
+                        if let videoURL = viewModel.filePath {
+                            VideoPlayerView(videoURL: videoURL)
                         } else {
                             Text("Loading...")
                         }
