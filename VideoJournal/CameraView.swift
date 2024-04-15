@@ -1,9 +1,33 @@
 import Aespa
 import SwiftUI
+import AVKit
 
 enum AssetType {
     case video
     case photo
+}
+struct VideoPlayerView: View {
+    let videoURL: URL
+
+    var body: some View {
+        PlayerContainerView(videoURL: videoURL)
+    }
+}
+
+struct PlayerContainerView: UIViewControllerRepresentable {
+    let videoURL: URL
+    
+    func makeUIViewController(context: Context) -> AVPlayerViewController {
+        let player = AVPlayer(url: videoURL)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        
+        player.play()
+        
+        return playerViewController
+    }
+
+    func updateUIViewController(_ uiViewController: AVPlayerViewController, context: Context) {}
 }
 
 struct CameraView: View {
@@ -24,10 +48,8 @@ struct CameraView: View {
                 } else {
                     switch captureMode {
                     case .video:
-                        if let takenVideo = viewModel.videoAlbumCover {
-                            takenVideo
-                                .resizable()
-                                .scaledToFill()
+                        if (viewModel.filePath != nil) {
+                            VideoPlayerView(videoURL: viewModel.filePath!)
                         } else {
                             Text("Loading...")
                         }
@@ -105,6 +127,7 @@ struct CameraView: View {
             viewModel.isTaken = false
             viewModel.videoAlbumCover = nil
             viewModel.capturedPhoto = nil
+            viewModel.filePath = nil
             
         }, label: {
             Image(systemName: "arrow.uturn.forward.circle")
