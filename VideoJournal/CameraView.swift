@@ -22,13 +22,6 @@ struct PlayerContainerView: UIViewControllerRepresentable {
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         
-//        // Add observer for when playback ends
-//        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { _ in
-//            player.seek(to: CMTime.zero)
-//            player.play()
-//        }
-        
-        // Start playing the video
         player.play()
         
         return playerViewController
