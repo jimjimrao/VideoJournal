@@ -22,11 +22,11 @@ struct PlayerContainerView: UIViewControllerRepresentable {
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
         
-        // Add observer for when playback ends
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { _ in
-            player.seek(to: CMTime.zero)
-            player.play()
-        }
+//        // Add observer for when playback ends
+//        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: nil) { _ in
+//            player.seek(to: CMTime.zero)
+//            player.play()
+//        }
         
         // Start playing the video
         player.play()
@@ -55,8 +55,8 @@ struct CameraView: View {
                 } else {
                     switch captureMode {
                     case .video:
-                        if let videoURL = viewModel.filePath {
-                            VideoPlayerView(videoURL: videoURL)
+                        if (viewModel.filePath != nil) {
+                            VideoPlayerView(videoURL: viewModel.filePath!)
                         } else {
                             Text("Loading...")
                         }
@@ -134,6 +134,7 @@ struct CameraView: View {
             viewModel.isTaken = false
             viewModel.videoAlbumCover = nil
             viewModel.capturedPhoto = nil
+            viewModel.filePath = nil
             
         }, label: {
             Image(systemName: "arrow.uturn.forward.circle")
